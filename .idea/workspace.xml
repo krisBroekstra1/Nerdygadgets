@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="411a0808-f179-4fbc-85d7-b4ff3836d78a" name="Default Changelist" comment="" />
+    <list default="true" id="7184735b-b602-4081-842c-c40bf2b50df6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Nerdygadgets.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nerdygadgets/backoffice/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/nerdygadgets/backoffice/main/Main.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,9 +18,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1af5yNkvCDd9ej3IhM0vaqfb5Sc" />
+  <component name="ProjectId" id="1af784MYOBjdyIRRFV3OOTua4w6" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -22,12 +34,16 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="411a0808-f179-4fbc-85d7-b4ff3836d78a" name="Default Changelist" comment="" />
-      <created>1587114060322</created>
+      <changelist id="7184735b-b602-4081-842c-c40bf2b50df6" name="Default Changelist" comment="" />
+      <created>1587114631896</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1587114060322</updated>
+      <updated>1587114631896</updated>
+      <workItem from="1587114635422" duration="114000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
 </project>

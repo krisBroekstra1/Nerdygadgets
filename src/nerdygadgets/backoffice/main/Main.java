@@ -8,5 +8,6 @@ public class Main {
         System.out.println("Dit os heel er mooir");
         System.out.println("Zet jij dit hier even neer");
         System.out.println("als dat jassie van jou beschadigd is");
+        System.out.println("Print er bij");
     }
 }

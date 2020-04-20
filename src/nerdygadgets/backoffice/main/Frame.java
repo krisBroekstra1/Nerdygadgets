@@ -9,6 +9,8 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setVisible(true);
+        repaint();
+        
     }
 
 }

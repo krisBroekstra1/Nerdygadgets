@@ -6,6 +6,7 @@ public class Main {
         System.out.println("Of niet? test");
         System.out.println("hoi");
         System.out.println("Dit os heel er mooir");
+        System.out.println("Zet jij dit hier even neer");
     }
 
 }

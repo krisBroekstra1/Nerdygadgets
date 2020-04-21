@@ -1,5 +1,12 @@
 package nerdygadgets.backoffice.main;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class Statement {
-    Statement statement = connection.createStatement();
+    private Connection connection;
+    Statement s = (Statement) connection.createStatement();
+
+    public Statement() throws SQLException {
+    }
 }

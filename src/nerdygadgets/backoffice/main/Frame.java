@@ -11,8 +11,10 @@ public class Frame extends JFrame implements ActionListener {
 
     public Frame (int width, int height){
         setSize(width, height);
+
         setTitle("NerdyGadgets backoffice");
         setLayout(new FlowLayout());
+        setTitle("NerdyGadgets Backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         JBopenGPSPanel = new JButton("Open gps panel");

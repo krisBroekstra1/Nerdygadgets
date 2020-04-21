@@ -4,22 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 
-import com.mysql.cj.xdevapi.JsonParser;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xml.sax.SAXException;
+
+
 
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 
 public class Gpscoördinate extends JDialog implements ActionListener {
     double lon;

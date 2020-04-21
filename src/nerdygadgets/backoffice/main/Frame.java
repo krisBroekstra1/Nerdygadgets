@@ -7,6 +7,7 @@ public class Frame extends JFrame {
         setSize(width, height);
         setTitle("NerdyGadgets backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setContentPane(new LoginContent());
 
         setVisible(true);
     }

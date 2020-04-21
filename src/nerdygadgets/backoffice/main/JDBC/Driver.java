@@ -3,7 +3,7 @@ import java.sql.*;
 public class Driver {
     public static void main(String[] args) {
         try {
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "elke", "");
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             Statement myStmt = myConn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT DeliveryInstructions FROM invoices");
             while (myRs.next()){

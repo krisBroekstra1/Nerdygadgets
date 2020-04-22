@@ -21,7 +21,7 @@ public class Driver {
         }
     }
     //Zo lees je de gegevens uit
-    /*ResultSet myRs = Driver.medewerkers();
+    /*ResultSet myRs = Driver.adressen();
         try {
         while (myRs.next()) {
             System.out.println(myRs.getString("DeliveryInstuctions"));

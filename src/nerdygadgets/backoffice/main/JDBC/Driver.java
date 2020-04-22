@@ -43,9 +43,12 @@ public class Driver {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             Statement myStmt = myConn.createStatement();
-            ResultSet myRs = myStmt.executeQuery("SELECT FullName FROM people");
+            ResultSet myRs = myStmt.executeQuery("SELECT FullName, LogonName, PhoneNumber FROM people where IsPermittedToLogon = 1");
             while (myRs.next()){
                 System.out.println(myRs.getString("FullName"));
+                System.out.println(myRs.getString("LogonName"));
+                System.out.println(myRs.getString("PhoneNumber"));
+                System.out.println();
             }
         } catch (Exception e) {
             e.printStackTrace();

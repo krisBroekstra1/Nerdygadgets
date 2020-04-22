@@ -9,6 +9,9 @@ public class Frame extends JFrame implements ActionListener {
     private JLabel _label;
     private JButton _btnRetour;
 
+    private JButton JBopenGPSPanel;
+    private JButton JBgetAdressen;
+
     public Frame (int width, int height){
         JButton btnRetour = new JButton("Retours");
         String[] columns = new String[] {"Name", "Age", "Nickname", "Employee"};

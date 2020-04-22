@@ -35,6 +35,8 @@ public class Gpscoördinate extends JDialog implements ActionListener {
         setTitle("Adres naar GPS coördinaten");
         setSize(300, 300);
         setVisible(true);
+        latArray = new ArrayList<>();
+        longArray = new ArrayList<>();
         JTadres = new JTextField(10);
         add(JTadres);
         JBadres = new JButton("Send adres");
@@ -75,7 +77,7 @@ public class Gpscoördinate extends JDialog implements ActionListener {
             latArray.add(lat);
             latArray.add(lon);
             JBaddToArraylist.setText("Is al toegevoegd!");
-            
+            JOptionPane.showMessageDialog(this, "Toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

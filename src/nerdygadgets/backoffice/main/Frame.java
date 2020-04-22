@@ -7,7 +7,10 @@ import java.awt.event.ActionListener;
 
 public class Frame extends JFrame implements ActionListener {
     private JLabel _label;
+    private JButton _btnRetour;
+
     public Frame (int width, int height){
+        JButton btnRetour = new JButton("Retours");
         String[] columns = new String[] {"Name", "Age", "Nickname", "Employee"};
 
         //testdata
@@ -25,17 +28,19 @@ public class Frame extends JFrame implements ActionListener {
         setTitle("NerdyGadgets backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        _label = new JLabel("orders");
-        add(_label);
+        _btnRetour = new JButton("orders");
+        _btnRetour.addActionListener(this);
 
+        add(_btnRetour);
 
         setVisible(true);
         repaint();
 
     }
 
-
     public void actionPerformed(ActionEvent e) {
-
+        if(e.getSource() == _btnRetour) {
+            retourPanel j = new retourPanel();
+        }
     }
 }

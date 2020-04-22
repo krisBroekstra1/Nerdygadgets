@@ -52,6 +52,8 @@ public class retourPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        _table.setEnabled(true);
+        if(e.getSource() == _btnBewerken) {
+            _table.setEnabled(true);
+        }
     }
 }

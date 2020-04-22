@@ -1,14 +1,14 @@
 package nerdygadgets.backoffice.main;
 
+import nerdygadgets.backoffice.main.JDBC.Driver;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class Main {
     public static void main(String[] args){
-        System.out.println("Werkt ie zo bij iedereen?");
-        System.out.println("Of niet? test");
-        System.out.println("hoi");
-        System.out.println("Dit os heel er mooir");
-        System.out.println("Zet jij dit hier even neer");
-        System.out.println("als dat jassie van jou beschadigd is");
-        System.out.println("Print er bij");
-        System.out.println("nog een print er bij");
+        Frame f = new Frame(1000, 1000);
     }
 }

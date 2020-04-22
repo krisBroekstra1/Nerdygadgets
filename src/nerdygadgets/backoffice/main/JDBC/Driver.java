@@ -4,54 +4,58 @@ import java.sql.*;
 
 public class Driver {
     public static void main(String[] args) {
-        medewerkers();
     }
 
 
-
-//Functies
-    //Test functie
-    public static void functie() {
-        try {
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
-            Statement myStmt = myConn.createStatement();
-            ResultSet myRs = myStmt.executeQuery("Vul hier jouw SQL query in!");
-            while (myRs.next()){
-                System.out.println(myRs.getString("Vul hier je columnLabel in!"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    //Functies
     //Functie adressen
-    public static void adressen() {
+    public static ResultSet adressen() {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             Statement myStmt = myConn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT DeliveryInstructions FROM invoices");
-            while (myRs.next()){
-                System.out.println(myRs.getString("DeliveryInstructions"));
-            }
+            return myRs;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
+    //Zo lees je de gegevens uit
+    /*ResultSet myRs = Driver.medewerkers();
+        try {
+        while (myRs.next()) {
+            System.out.println(myRs.getString("DeliveryInstuctions"));
+            System.out.println();
+        }
+    }
+        catch (Exception e) {
+        e.printStackTrace();
+    }*/
 
     //Functie medewerkers
-    public static void medewerkers() {
+    public static ResultSet medewerkers() {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             Statement myStmt = myConn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT FullName, EmailAddress, PhoneNumber FROM people");
-            while (myRs.next()){
-                System.out.println(myRs.getString("FullName"));
-                System.out.println(myRs.getString("EmailAddress"));
-                System.out.println(myRs.getString("PhoneNumber"));
-                System.out.println();
-            }
+            return myRs;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
+    //Zo lees je de gegevens uit
+    /*ResultSet myRs = Driver.medewerkers();
+        try {
+        while (myRs.next()) {
+            System.out.println(myRs.getString("FullName"));
+            System.out.println(myRs.getString("EmailAddress"));
+            System.out.println(myRs.getString("PhoneNumber"));
+            System.out.println();
+        }
+    }
+        catch (Exception e) {
+        e.printStackTrace();
+    }*/
+
 }

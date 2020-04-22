@@ -57,5 +57,18 @@ public class Driver {
         catch (Exception e) {
         e.printStackTrace();
     }*/
-
+    public static ResultSet login(String username, String password) {
+        try {
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            String sql = "SELECT COUNT(*) FROM people WHERE LogonName = ?";
+            PreparedStatement ps = myConn.prepareStatement(sql);
+            ps.setString(1, username);
+            System.out.print(ps);
+            ResultSet myRs = ps.executeQuery();
+            return myRs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }2
 }

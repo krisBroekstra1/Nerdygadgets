@@ -1,6 +1,7 @@
 package nerdygadgets.backoffice.main;
 
 import com.mysql.cj.log.Log;
+import nerdygadgets.backoffice.main.JDBC.Driver;
 import nerdygadgets.backoffice.main.data.LoginData;
 
 import javax.swing.*;
@@ -8,6 +9,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 public class LoginContent extends JPanel implements ActionListener {
     private JTextField username;
@@ -41,19 +43,25 @@ public class LoginContent extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == login) {
-            if(username.getText().equals("KRIS") && password.getText().equals("KRIS")) {
-                LoginData KRIS = LoginData.getInstance();
-                KRIS.setEmail("HENK@gmail.com");
-                KRIS.setId("1");
-                KRIS.setName("KRIS");
-                System.out.println("KRIS 1: " + KRIS.getEmail());
-                frame.remove(this);
-                frame.add(new JLabel("HUTS, Je bent ingelogd"));
-                frame.revalidate();
-                frame.repaint();
-            }
-            else {
-                System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
+            try{
+                ResultSet myrs = Driver.login(username.getText(), password.getText());
+                System.out.print(myrs.getRow());
+                if(myrs.getRow() == 1) {
+                    LoginData KRIS = LoginData.getInstance();
+                    KRIS.setEmail("HENK@gmail.com");
+                    KRIS.setId("1");
+                    KRIS.setName("KRIS");
+                    System.out.println("KRIS 1: " + KRIS.getEmail());
+                    frame.remove(this);
+                    frame.add(new JLabel("HUTS, Je bent ingelogd"));
+                    frame.revalidate();
+                    frame.repaint();
+                }
+                else {
+                    System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
+                }
+            } catch(Exception ex){
+                ex.printStackTrace();
             }
         }
     }

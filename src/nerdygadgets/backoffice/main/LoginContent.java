@@ -45,20 +45,20 @@ public class LoginContent extends JPanel implements ActionListener {
         if(e.getSource() == login) {
             try{
                 ResultSet myrs = Driver.login(username.getText(), password.getText());
-                System.out.print(myrs.getRow());
-                if(myrs.getRow() == 1) {
-                    LoginData KRIS = LoginData.getInstance();
-                    KRIS.setEmail("HENK@gmail.com");
-                    KRIS.setId("1");
-                    KRIS.setName("KRIS");
-                    System.out.println("KRIS 1: " + KRIS.getEmail());
-                    frame.remove(this);
-                    frame.add(new JLabel("HUTS, Je bent ingelogd"));
-                    frame.revalidate();
-                    frame.repaint();
-                }
-                else {
-                    System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
+                if(myrs.next()) {
+                    if (myrs.getRow() == 1) {
+                        LoginData session = LoginData.getInstance();
+                        session.setEmail("HENK@gmail.com");
+                        session.setId("1");
+                        session.setName("KRIS");
+                        session.login();
+                        frame.remove(this);
+                        frame.add(new JLabel("HUTS, Je bent ingelogd"));
+                        frame.revalidate();
+                        frame.repaint();
+                    } else {
+                        System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
+                    }
                 }
             } catch(Exception ex){
                 ex.printStackTrace();

@@ -20,7 +20,7 @@ public class Frame extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         JBopenGPSPanel = new JButton("Open gps panel");
-        this.add(JBopenGPSPanel);
+        this.add(new LoginContent(this));
         JBopenGPSPanel.addActionListener(this);
         JBgetAdressen = new JButton("Verkrijg adressen");
         JBgetAdressen.addActionListener(this);

@@ -22,6 +22,7 @@ public class Frame extends JFrame implements ActionListener {
         JBopenGPSPanel = new JButton("Open gps panel");
         this.add(new LoginContent(this));
         JBopenGPSPanel.addActionListener(this);
+        add(JBopenGPSPanel);
         JBgetAdressen = new JButton("Verkrijg adressen");
         JBgetAdressen.addActionListener(this);
         add(JBgetAdressen);

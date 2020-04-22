@@ -11,7 +11,7 @@ public class Driver {
     //Functie adressen
     public static ResultSet adressen() {
         try {
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "elke", "");
             Statement myStmt = myConn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT DeliveryInstructions FROM invoices");
             return myRs;
@@ -35,7 +35,7 @@ public class Driver {
     //Functie medewerkers
     public static ResultSet medewerkers() {
         try {
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "elke", "");
             Statement myStmt = myConn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT FullName, EmailAddress, PhoneNumber FROM people");
             return myRs;
@@ -59,7 +59,7 @@ public class Driver {
     }*/
     public static ResultSet login(String username, String password) {
         try {
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "elke", "");
             String sql = "SELECT COUNT(*) FROM people WHERE LogonName = ?";
             PreparedStatement ps = myConn.prepareStatement(sql);
             ps.setString(1, username);

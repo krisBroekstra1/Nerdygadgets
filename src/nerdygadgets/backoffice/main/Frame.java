@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 
 public class Frame extends JFrame implements ActionListener {
     JButton JBopenGPSPanel;
-    private JDialog Gpscoördinate;
+    private Gpscoördinate Gpscoördinate;
 
-    public Frame (int width, int height){
+    private JButton JBgetAdressen;
+
+    public Frame(int width, int height) {
         setSize(width, height);
 
         setTitle("NerdyGadgets backoffice");
@@ -20,16 +22,41 @@ public class Frame extends JFrame implements ActionListener {
         JBopenGPSPanel = new JButton("Open gps panel");
         this.add(JBopenGPSPanel);
         JBopenGPSPanel.addActionListener(this);
+        JBgetAdressen = new JButton("Verkrijg adressen");
+        JBgetAdressen.addActionListener(this);
+        add(JBgetAdressen);
         revalidate();
         repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Gpscoördinate = new Gpscoördinate();
-        Gpscoördinate.revalidate();
-        Gpscoördinate.repaint();
-        revalidate();
-        repaint();
+        if (e.getSource() == JBopenGPSPanel) {
+            Gpscoördinate = new Gpscoördinate();
+            Gpscoördinate.revalidate();
+            Gpscoördinate.repaint();
+            revalidate();
+            repaint();
+        }
+        if (e.getSource() == JBgetAdressen) {
+            getAdressen();
+        }
+    }
+
+    public void getAdressen() {
+        try{
+            for (int i = 0; i < Gpscoördinate.getPlaatsArray().size(); i++) {
+                add(new JLabel(Gpscoördinate.getPlaatsArray().get(i)));
+                add(new JLabel(""+Gpscoördinate.getLongArray().get(i)));
+                add(new JLabel(""+Gpscoördinate.getLatArray().get(i)));
+                System.out.println(Gpscoördinate.getPlaatsArray().get(i));
+                System.out.println(Gpscoördinate.getLongArray().get(i));
+                System.out.println(Gpscoördinate.getLatArray().get(i));
+                revalidate();
+                repaint();
+            }
+        } catch (Exception e){
+            System.out.println("godver");
+        }
     }
 }

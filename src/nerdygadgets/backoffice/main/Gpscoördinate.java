@@ -19,6 +19,7 @@ public class Gpscoördinate extends JDialog implements ActionListener {
     JTextField JTadres;
     JButton JBadres;
 
+    private ArrayList<String> plaatsArray;
     private ArrayList<Double> latArray;
     private ArrayList<Double> longArray;
 
@@ -35,6 +36,7 @@ public class Gpscoördinate extends JDialog implements ActionListener {
         setTitle("Adres naar GPS coördinaten");
         setSize(300, 300);
         setVisible(true);
+        plaatsArray = new ArrayList<>();
         latArray = new ArrayList<>();
         longArray = new ArrayList<>();
         JTadres = new JTextField(10);
@@ -69,13 +71,15 @@ public class Gpscoördinate extends JDialog implements ActionListener {
             remove(JLcoords);
             remove(JBgenerate);
             remove(JBnewAddress);
+            remove(JBaddToArraylist);
             JTadres.setText("");
             revalidate();
             repaint();
         }
         if(e.getSource() == JBaddToArraylist) {
+            plaatsArray.add(JTadres.getText());
             latArray.add(lat);
-            latArray.add(lon);
+            longArray.add(lon);
             JBaddToArraylist.setText("Is al toegevoegd!");
             JOptionPane.showMessageDialog(this, "Toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -116,5 +120,17 @@ public class Gpscoördinate extends JDialog implements ActionListener {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<String> getPlaatsArray() {
+        return plaatsArray;
+    }
+
+    public ArrayList<Double> getLatArray() {
+        return latArray;
+    }
+
+    public ArrayList<Double> getLongArray() {
+        return longArray;
     }
 }

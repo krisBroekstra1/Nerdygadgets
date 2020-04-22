@@ -1,5 +1,8 @@
 package nerdygadgets.backoffice.main;
 
+import com.mysql.cj.log.Log;
+import nerdygadgets.backoffice.main.data.LoginData;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -13,8 +16,10 @@ public class LoginContent extends JPanel implements ActionListener {
     private JLabel name, passwordL;
     private String testname = "KRIS";
     private String testpassword = "KRIS";
+    private Frame frame;
 
-    public LoginContent(){
+    public LoginContent(Frame f){
+        this.frame = f;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(Box.createHorizontalGlue());
         name = new JLabel("username");
@@ -37,7 +42,15 @@ public class LoginContent extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == login) {
             if(username.getText().equals("KRIS") && password.getText().equals("KRIS")) {
-                System.out.println("Je bent ingelogd");
+                LoginData KRIS = LoginData.getInstance();
+                KRIS.setEmail("HENK@gmail.com");
+                KRIS.setId("1");
+                KRIS.setName("KRIS");
+                System.out.println("KRIS 1: " + KRIS.getEmail());
+                frame.remove(this);
+                frame.add(new JLabel("HUTS, Je bent ingelogd"));
+                frame.revalidate();
+                frame.repaint();
             }
             else {
                 System.out.println("De gebruikersnaam of het wachtwoord is onjuist");

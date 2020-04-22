@@ -24,7 +24,7 @@ public class Driver {
     /*ResultSet myRs = Driver.adressen();
         try {
         while (myRs.next()) {
-            System.out.println(myRs.getString("DeliveryInstuctions"));
+            System.out.println(myRs.getString("DeliveryInstructions"));
             System.out.println();
         }
     }

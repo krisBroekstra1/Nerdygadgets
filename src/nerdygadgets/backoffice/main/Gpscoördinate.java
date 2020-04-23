@@ -91,7 +91,6 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             resetGPSJpanel();
         }
 
-      
            
 
         

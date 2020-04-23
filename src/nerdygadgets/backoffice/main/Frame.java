@@ -14,6 +14,7 @@ public class Frame extends JFrame implements ActionListener {
         setSize(width, height);
         setTitle("NerdyGadgets Backoffice");
         setLayout(new GridLayout());
+
         setTitle("NerdyGadgets Backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);

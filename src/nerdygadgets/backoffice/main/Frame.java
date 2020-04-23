@@ -34,6 +34,7 @@ public class Frame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == JBopenGPSPanel) {
             Gpscoördinate = new Gpscoördinate();
+            add(Gpscoördinate);
             Gpscoördinate.revalidate();
             Gpscoördinate.repaint();
             revalidate();

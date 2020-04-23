@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Gpscoördinate extends JDialog implements ActionListener {
+public class Gpscoördinate extends JPanel implements ActionListener {
     double lon;
     double lat;
     String Adres;
@@ -33,7 +33,6 @@ public class Gpscoördinate extends JDialog implements ActionListener {
 
     public Gpscoördinate() {
         setLayout(new FlowLayout());
-        setTitle("Adres naar GPS coördinaten");
         setSize(300, 300);
         setVisible(true);
         plaatsArray = new ArrayList<>();

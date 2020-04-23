@@ -11,6 +11,7 @@ public class Frame extends JFrame implements ActionListener {
     private Gpscoördinate Gpscoördinate;
 
     private JButton JBgetAdressen;
+    private JButton _btnRetour;
 
     public Frame(int width, int height) {
         setSize(width, height);
@@ -19,6 +20,18 @@ public class Frame extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setVisible(true);
+        JBopenGPSPanel = new JButton("Open gps panel");
+        this.add(new LoginContent(this));
+        JBopenGPSPanel.addActionListener(this);
+        add(JBopenGPSPanel);
+        JBgetAdressen = new JButton("Verkrijg adressen");
+        JBgetAdressen.addActionListener(this);
+        add(JBgetAdressen);
+        _btnRetour = new JButton("Retour");
+        _btnRetour.addActionListener(this);
+        add(_btnRetour);
+        revalidate();
+        repaint();
     }
 
     @Override
@@ -32,6 +45,9 @@ public class Frame extends JFrame implements ActionListener {
         }
         if (e.getSource() == JBgetAdressen) {
             getAdressen();
+        }
+        if (e.getSource() == _btnRetour) {
+            retourPanel p = new retourPanel();
         }
     }
 

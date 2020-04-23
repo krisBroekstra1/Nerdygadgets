@@ -44,7 +44,6 @@ public class LoginContent extends JPanel implements ActionListener {
                 try {
                     ResultSet myrs = Driver.login(username.getText(), String.valueOf(password.getPassword()));
                     if (myrs.next()) {
-                        System.out.println(myrs.getString("COUNT(*)"));
                         int rows = Integer.parseInt(myrs.getString("COUNT(*)"));
                         if (rows == 1) {
                             LoginData logindata = LoginData.getInstance();
@@ -55,15 +54,12 @@ public class LoginContent extends JPanel implements ActionListener {
                             frame.setVisible(false);
                             frame.dispose();
                             Main.main(new String[0]);
-                            frame.remove(this);
-                            frame.add(new JLabel("HUTS, Je bent ingelogd"));
-                            frame.revalidate();
-                            frame.repaint();
                         } else {
                             System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
                         }
                     }
                 }catch (Exception ex){
+                    
             }
         }
     }

@@ -16,8 +16,6 @@ public class LoginContent extends JPanel implements ActionListener {
     private JPasswordField password;
     private JButton login;
     private JLabel name, passwordL;
-    private String testname = "KRIS";
-    private String testpassword = "KRIS";
     private Frame frame;
 
     public LoginContent(Frame f){
@@ -43,29 +41,22 @@ public class LoginContent extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == login) {
-            try{
-                ResultSet myrs = Driver.login(username.getText(), password.getText());
-                if(myrs.next()){
-                    System.out.println(myrs.getString("COUNT(*)"));
-                    int rows = Integer.parseInt(myrs.getString("COUNT(*)"));
-                    if(rows == 1) {
-                        LoginData KRIS = LoginData.getInstance();
-                        KRIS.setEmail("HENK@gmail.com");
-                        KRIS.setId("1");
-                        KRIS.setName("KRIS");
-                        frame.remove(this);
-                        frame.add(new JLabel("HUTS, Je bent ingelogd"));
-                        frame.revalidate();
-                        frame.repaint();
+                try {
+                    ResultSet myrs = Driver.login(username.getText(), String.valueOf(password.getPassword()));
+                    if (myrs.next()) {
+                        System.out.println(myrs.getString("COUNT(*)"));
+                        int rows = Integer.parseInt(myrs.getString("COUNT(*)"));
+                        if (rows == 1) {
+                            frame.remove(this);
+                            frame.add(new JLabel("HUTS, Je bent ingelogd"));
+                            frame.revalidate();
+                            frame.repaint();
+                        } else {
+                            System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
+                        }
                     }
-                    else {
-                        System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
-                    }
-                }
-            } catch (Exception ex){
-
+                }catch (Exception ex){
             }
-
         }
     }
 }

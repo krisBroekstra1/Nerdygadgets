@@ -31,6 +31,7 @@ public class Gpscoördinate extends JPanel implements ActionListener {
 
     JButton JBaddToArraylist;
 
+    private JButton JBgetAdressen;
     public Gpscoördinate() {
         setLayout(new FlowLayout());
         setSize(300, 300);
@@ -45,6 +46,9 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         add(JBadres);
         JBgenerate = new JButton("Genereer long en lat");
         JBgenerate.addActionListener(this);
+        JBgetAdressen = new JButton("Verkrijg adressen");
+        JBgetAdressen.addActionListener(this);
+        add(JBgetAdressen);
     }
 
 
@@ -81,6 +85,9 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             longArray.add(lon);
             JBaddToArraylist.setText("Is al toegevoegd!");
             JOptionPane.showMessageDialog(this, "Toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
+        }
+        if(e.getSource() == JBgetAdressen){
+            getAdressen();
         }
     }
 
@@ -119,6 +126,22 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             e.printStackTrace();
         }
 
+    }
+    public void getAdressen() {
+        try{
+            for (int i = 0; i < plaatsArray.size(); i++) {
+                add(new JLabel(plaatsArray.get(i)));
+                add(new JLabel(""+longArray.get(i)));
+                add(new JLabel(""+latArray.get(i)));
+                System.out.println(plaatsArray.get(i));
+                System.out.println(longArray.get(i));
+                System.out.println(latArray.get(i));
+                revalidate();
+                repaint();
+            }
+        } catch (Exception e){
+            System.out.println("godver");
+        }
     }
 
     public ArrayList<String> getPlaatsArray() {

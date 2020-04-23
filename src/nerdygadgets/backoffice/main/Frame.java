@@ -9,7 +9,6 @@ public class Frame extends JFrame implements ActionListener {
     JButton JBopenGPSPanel;
     private Gpscoördinate Gpscoördinate;
 
-    private JButton JBgetAdressen;
 
     public Frame(int width, int height) {
         setSize(width, height);
@@ -23,9 +22,6 @@ public class Frame extends JFrame implements ActionListener {
         this.add(new LoginContent(this));
         JBopenGPSPanel.addActionListener(this);
         add(JBopenGPSPanel);
-        JBgetAdressen = new JButton("Verkrijg adressen");
-        JBgetAdressen.addActionListener(this);
-        add(JBgetAdressen);
         revalidate();
         repaint();
     }
@@ -40,25 +36,7 @@ public class Frame extends JFrame implements ActionListener {
             revalidate();
             repaint();
         }
-        if (e.getSource() == JBgetAdressen) {
-            getAdressen();
-        }
     }
 
-    public void getAdressen() {
-        try{
-            for (int i = 0; i < Gpscoördinate.getPlaatsArray().size(); i++) {
-                add(new JLabel(Gpscoördinate.getPlaatsArray().get(i)));
-                add(new JLabel(""+Gpscoördinate.getLongArray().get(i)));
-                add(new JLabel(""+Gpscoördinate.getLatArray().get(i)));
-                System.out.println(Gpscoördinate.getPlaatsArray().get(i));
-                System.out.println(Gpscoördinate.getLongArray().get(i));
-                System.out.println(Gpscoördinate.getLatArray().get(i));
-                revalidate();
-                repaint();
-            }
-        } catch (Exception e){
-            System.out.println("godver");
-        }
-    }
+
 }

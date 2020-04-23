@@ -15,7 +15,6 @@ import java.util.Vector;
 
 public class retourPanel extends JPanel implements ActionListener {
 
-    JFrame frame;
     JTable _table;
     JButton _btnBewerken;
     JLabel label;
@@ -23,7 +22,6 @@ public class retourPanel extends JPanel implements ActionListener {
     public retourPanel(){
         ResultSet rs = Driver.orders();
 
-        frame = new JFrame();
         label = new JLabel("Retours");
         try {
             _table = new JTable(buildTableModel(rs));
@@ -33,10 +31,6 @@ public class retourPanel extends JPanel implements ActionListener {
 
         _btnBewerken = new JButton("Bewerken");
         JScrollPane sp = new JScrollPane(_table);
-
-        frame.setTitle("Retour");
-        frame.setMinimumSize(new Dimension(500, 600));
-        frame.setLayout(new FlowLayout());
 
 
         _table.setBounds(30, 40, 200, 200);
@@ -48,11 +42,9 @@ public class retourPanel extends JPanel implements ActionListener {
 
         _btnBewerken.addActionListener(this);
 
-        frame.add(label);
-        frame.add(sp);
-        frame.add(_btnBewerken);
-
-        frame.setVisible(true);
+        add(label);
+        add(sp);
+        add(_btnBewerken);
     }
 
     public static DefaultTableModel buildTableModel(ResultSet rs)

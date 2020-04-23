@@ -20,7 +20,7 @@ public class LoginContent extends JPanel implements ActionListener {
     private String testpassword = "KRIS";
     private Frame frame;
 
-    public LoginContent(Frame f){
+    public LoginContent(Frame f) {
         this.frame = f;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(Box.createHorizontalGlue());
@@ -42,10 +42,10 @@ public class LoginContent extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == login) {
-            try{
+        if (e.getSource() == login) {
+            try {
                 ResultSet myrs = Driver.login(username.getText(), password.getText());
-                if(myrs.next()) {
+                if (myrs.next()) {
                     if (myrs.getRow() == 1) {
                         LoginData session = LoginData.getInstance();
                         session.setEmail("HENK@gmail.com");
@@ -60,7 +60,7 @@ public class LoginContent extends JPanel implements ActionListener {
                         System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
                     }
                 }
-            } catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }

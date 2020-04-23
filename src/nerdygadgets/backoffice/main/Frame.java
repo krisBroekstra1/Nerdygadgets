@@ -13,7 +13,7 @@ public class Frame extends JFrame implements ActionListener {
     public Frame(int width, int height) {
         setSize(width, height);
 
-        setTitle("NerdyGadgets backoffice");
+        setTitle("NerdyGadgets Backoffice");
         setLayout(new FlowLayout());
         setTitle("NerdyGadgets Backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -26,7 +26,6 @@ public class Frame extends JFrame implements ActionListener {
         repaint();
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == JBopenGPSPanel) {
             Gpscoördinate = new Gpscoördinate();
@@ -37,6 +36,4 @@ public class Frame extends JFrame implements ActionListener {
             repaint();
         }
     }
-
-
 }

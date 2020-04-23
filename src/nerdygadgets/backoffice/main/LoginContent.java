@@ -49,14 +49,14 @@ public class LoginContent extends JPanel implements ActionListener {
                     System.out.println(myrs.getString("COUNT(*)"));
                     int rows = Integer.parseInt(myrs.getString("COUNT(*)"));
                     if(rows == 1) {
-                        LoginData KRIS = LoginData.getInstance();
-                        KRIS.setEmail("HENK@gmail.com");
-                        KRIS.setId("1");
-                        KRIS.setName("KRIS");
-                        frame.remove(this);
-                        frame.add(new JLabel("HUTS, Je bent ingelogd"));
-                        frame.revalidate();
-                        frame.repaint();
+                        LoginData logindata = LoginData.getInstance();
+                        logindata.setEmail("HENK@gmail.com");
+                        logindata.setId("1");
+                        logindata.setName("KRIS");
+                        logindata.login();
+                        frame.setVisible(false);
+                        frame.dispose();
+                        Main.main(new String[0]);
                     }
                     else {
                         System.out.println("De gebruikersnaam of het wachtwoord is onjuist");

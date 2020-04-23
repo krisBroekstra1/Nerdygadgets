@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class Frame extends JFrame implements ActionListener {
     JButton JBopenGPSPanel;
@@ -15,19 +16,9 @@ public class Frame extends JFrame implements ActionListener {
         setSize(width, height);
 
         setTitle("NerdyGadgets backoffice");
-        setLayout(new FlowLayout());
-        setTitle("NerdyGadgets Backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         setVisible(true);
-        JBopenGPSPanel = new JButton("Open gps panel");
-        this.add(new LoginContent(this));
-        JBopenGPSPanel.addActionListener(this);
-        add(JBopenGPSPanel);
-        JBgetAdressen = new JButton("Verkrijg adressen");
-        JBgetAdressen.addActionListener(this);
-        add(JBgetAdressen);
-        revalidate();
-        repaint();
     }
 
     @Override

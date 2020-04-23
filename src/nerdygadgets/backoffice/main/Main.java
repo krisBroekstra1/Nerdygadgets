@@ -11,8 +11,11 @@ public class Main {
             f.revalidate();
             f.repaint();
         } else {
-            Frame f2 = new Frame(200, 200);
+            Frame f2 = new Frame(350, 350);
+            f2.setTitle("Backoffice - Login");
             f2.add(new LoginContent(f2));
+            f2.revalidate();
+            f2.repaint();
         }
     }
 }

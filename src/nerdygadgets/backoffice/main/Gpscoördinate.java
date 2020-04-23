@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Gpscoördinate extends JPanel implements ActionListener {
     double lon;
@@ -29,9 +31,11 @@ public class Gpscoördinate extends JPanel implements ActionListener {
     JLabel JLcoords;
     JLabel JLadres;
 
-    JButton JBaddToArraylist;
+    JLabel JLshowAdres;
+
 
     private JButton JBgetAdressen;
+
     public Gpscoördinate() {
         setLayout(new FlowLayout());
         setSize(300, 300);
@@ -39,16 +43,19 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         plaatsArray = new ArrayList<>();
         latArray = new ArrayList<>();
         longArray = new ArrayList<>();
-        JTadres = new JTextField(10);
-        add(JTadres);
-        JBadres = new JButton("Send adres");
-        JBadres.addActionListener(this);
-        add(JBadres);
-        JBgenerate = new JButton("Genereer long en lat");
-        JBgenerate.addActionListener(this);
+
         JBgetAdressen = new JButton("Verkrijg adressen");
         JBgetAdressen.addActionListener(this);
         add(JBgetAdressen);
+
+        JTadres = new JTextField(10);
+        add(JTadres);
+
+        JBadres = new JButton("Send adres");
+        JBadres.addActionListener(this);
+        add(JBadres);
+
+
     }
 
 
@@ -56,9 +63,20 @@ public class Gpscoördinate extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == JBadres) {
             Adres = JTadres.getText();
+            if (Adres.isEmpty() || checkSpecialCharacters(Adres)) {
+                JOptionPane.showMessageDialog(getParent(), "Het invoerveld is leeg of bevat niet toegestane characters!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            System.out.println(Adres);
             JLadres = new JLabel("Is dit uw adres:  " + Adres + "?");
+            JBgenerate = new JButton("Ja!");
+            JBgenerate.addActionListener(this);
             add(JLadres);
             add(JBgenerate);
+            remove(JBadres);
+            JBnewAddress = new JButton("Nieuw Adres");
+            JBnewAddress.addActionListener(this);
+            add(JBnewAddress);
             revalidate();
             repaint();
         }
@@ -70,24 +88,25 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             }
         }
         if (e.getSource() == JBnewAddress) {
-            remove(JLadres);
-            remove(JLcoords);
-            remove(JBgenerate);
-            remove(JBnewAddress);
-            remove(JBaddToArraylist);
-            JTadres.setText("");
-            revalidate();
-            repaint();
+            resetGPSJpanel();
         }
-        if(e.getSource() == JBaddToArraylist) {
-            plaatsArray.add(JTadres.getText());
-            latArray.add(lat);
-            longArray.add(lon);
-            JBaddToArraylist.setText("Is al toegevoegd!");
-            JOptionPane.showMessageDialog(this, "Toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
-        }
-        if(e.getSource() == JBgetAdressen){
+
+      
+           
+
+        
+        if (e.getSource() == JBgetAdressen) {
+
+ removeAll();
             getAdressen();
+            JButton goBack = new JButton("Terug");
+            goBack.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    resetGPSJpanel();
+                }
+            });
+            add(goBack);
         }
     }
 
@@ -114,34 +133,50 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             JLcoords = new JLabel("Latitude: " + lat + " Longitude: " + lon);
             add(JLcoords);
             //add reset button
-            JBnewAddress = new JButton("Nieuw Adres");
-            JBaddToArraylist = new JButton("Voeg toe");
-            JBnewAddress.addActionListener(this);
-            JBaddToArraylist.addActionListener(this);
-            add(JBaddToArraylist);
-            add(JBnewAddress);
+            plaatsArray.add(Adres);
+            latArray.add(lat);
+            longArray.add(lon);
             revalidate();
             repaint();
+            resetGPSJpanel();
+            JOptionPane.showMessageDialog(this, Adres + " is toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
     public void getAdressen() {
-        try{
+        try {
             for (int i = 0; i < plaatsArray.size(); i++) {
-                add(new JLabel(plaatsArray.get(i)));
-                add(new JLabel(""+longArray.get(i)));
-                add(new JLabel(""+latArray.get(i)));
-                System.out.println(plaatsArray.get(i));
-                System.out.println(longArray.get(i));
-                System.out.println(latArray.get(i));
+                JLshowAdres = new JLabel("Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
+                if (plaatsArray.size() == 0) {
+                    JLshowAdres.setText("Er zijn geen gegevens!");
+                }
+                add(JLshowAdres);
                 revalidate();
                 repaint();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("godver");
         }
+    }
+
+
+    public boolean checkSpecialCharacters(String string) {
+        Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(string);
+        return m.find();
+    }
+
+    public void resetGPSJpanel() {
+        removeAll();
+        add(JBgetAdressen);
+        add(JTadres);
+        add(JBadres);
+        JTadres.setText("");
+        revalidate();
+        repaint();
     }
 
     public ArrayList<String> getPlaatsArray() {

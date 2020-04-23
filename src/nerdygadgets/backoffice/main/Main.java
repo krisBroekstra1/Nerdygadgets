@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Frame f = new Frame(1000, 1000);
     }
 }

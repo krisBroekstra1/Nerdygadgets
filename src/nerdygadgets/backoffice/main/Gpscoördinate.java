@@ -63,22 +63,26 @@ public class Gpscoördinate extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == JBadres) {
             Adres = JTadres.getText();
-            if (Adres.isEmpty() || checkSpecialCharacters(Adres)) {
-                JOptionPane.showMessageDialog(getParent(), "Het invoerveld is leeg of bevat niet toegestane characters!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+            if (Adres.length() > 2) {
+                if (Adres.isEmpty() || checkSpecialCharacters(Adres)) {
+                    JOptionPane.showMessageDialog(getParent(), "Het invoerveld is leeg of bevat niet toegestane characters!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                System.out.println(Adres);
+                JLadres = new JLabel("Is dit uw adres:  " + Adres + "?");
+                JBgenerate = new JButton("Ja!");
+                JBgenerate.addActionListener(this);
+                add(JLadres);
+                add(JBgenerate);
+                remove(JBadres);
+                JBnewAddress = new JButton("Nieuw Adres");
+                JBnewAddress.addActionListener(this);
+                add(JBnewAddress);
+                revalidate();
+                repaint();
+            } if(Adres.length() <= 2){
+                JOptionPane.showMessageDialog(this, "Je moet meer dan twee characters invoeren!","Error", JOptionPane.ERROR_MESSAGE);
             }
-            System.out.println(Adres);
-            JLadres = new JLabel("Is dit uw adres:  " + Adres + "?");
-            JBgenerate = new JButton("Ja!");
-            JBgenerate.addActionListener(this);
-            add(JLadres);
-            add(JBgenerate);
-            remove(JBadres);
-            JBnewAddress = new JButton("Nieuw Adres");
-            JBnewAddress.addActionListener(this);
-            add(JBnewAddress);
-            revalidate();
-            repaint();
         }
         if (e.getSource() == JBgenerate) {
             try {
@@ -91,21 +95,20 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             resetGPSJpanel();
         }
 
-           
 
-        
         if (e.getSource() == JBgetAdressen) {
-
- removeAll();
+            removeAll();
+            System.out.println("remove all werkt!");
             getAdressen();
+            System.out.println("getAdressen werkt!");
             JButton goBack = new JButton("Terug");
+            add(goBack);
             goBack.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     resetGPSJpanel();
                 }
             });
-            add(goBack);
         }
     }
 
@@ -113,32 +116,41 @@ public class Gpscoördinate extends JPanel implements ActionListener {
     public void generate(String adres) throws IOException {
         String apiKey = "96e20cadb6a7778960dd6d2e55d01610";
         String query = adres;
+        query = query.replaceAll(" ", "%20");
         String surl = "http://api.positionstack.com/v1/forward?access_key=" + apiKey + "&query=" + query;
         URL url = new URL(surl);
         InputStream ip = url.openStream();
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(ip));
+
             //convert String into coords
-            String coords = rd.readLine().substring(11, 60);
-            System.out.println(coords);
-            String[] coordsSplit = coords.split(",");
-            String[] latSplit = coordsSplit[0].split(":");
-            String[] longSplit = coordsSplit[1].split(":");
-            lon = Double.parseDouble(longSplit[1]);
-            lat = Double.parseDouble(latSplit[1]);
-            System.out.println(latSplit[1]);
-            System.out.println(longSplit[1]);
-            //print coords on dialog
-            JLcoords = new JLabel("Latitude: " + lat + " Longitude: " + lon);
-            add(JLcoords);
-            //add reset button
-            plaatsArray.add(Adres);
-            latArray.add(lat);
-            longArray.add(lon);
+            String coordsStringone = rd.readLine();
+            System.out.println(coordsStringone);
+            if (coordsStringone.length() > 11) {
+                String coords = coordsStringone.substring(11, 60);
+                System.out.println(coords);
+                String[] coordsSplit = coords.split(",");
+                String[] latSplit = coordsSplit[0].split(":");
+                String[] longSplit = coordsSplit[1].split(":");
+                lon = Double.parseDouble(longSplit[1]);
+                lat = Double.parseDouble(latSplit[1]);
+                System.out.println(latSplit[1]);
+                System.out.println(longSplit[1]);
+                //print coords on dialog
+                JLcoords = new JLabel("Latitude: " + lat + " Longitude: " + lon);
+                add(JLcoords);
+                //add reset button
+                plaatsArray.add(Adres);
+                latArray.add(lat);
+                longArray.add(lon);
+                JOptionPane.showMessageDialog(this, Adres + " is toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
+            }
+            if (coordsStringone.length() == 11) {
+                JOptionPane.showMessageDialog(this, "Levert geen resultaat op, probeer opnieuw!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             revalidate();
             repaint();
             resetGPSJpanel();
-            JOptionPane.showMessageDialog(this, Adres + " is toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -147,14 +159,20 @@ public class Gpscoördinate extends JPanel implements ActionListener {
 
     public void getAdressen() {
         try {
-            for (int i = 0; i < plaatsArray.size(); i++) {
-                JLshowAdres = new JLabel("Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
-                if (plaatsArray.size() == 0) {
-                    JLshowAdres.setText("Er zijn geen gegevens!");
-                }
+            if (plaatsArray.isEmpty()) {
+                JLshowAdres = new JLabel("Er zijn geen gegevens!");
                 add(JLshowAdres);
                 revalidate();
                 repaint();
+                return;
+            } else {
+                for (int i = 0; i < plaatsArray.size(); i++) {
+                    System.out.println("doei");
+                    JLshowAdres = new JLabel("Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
+                    add(JLshowAdres);
+                    revalidate();
+                    repaint();
+                }
             }
         } catch (Exception e) {
             System.out.println("godver");

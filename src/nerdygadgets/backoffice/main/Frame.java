@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
-public class Frame extends JFrame implements ActionListener {
+public class Frame extends JFrame{
     JButton JBopenGPSPanel;
     private Gpscoördinate Gpscoördinate;
 
@@ -17,6 +18,7 @@ public class Frame extends JFrame implements ActionListener {
 
         setTitle("NerdyGadgets Backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         setVisible(true);
         JBopenGPSPanel = new JButton("Open gps panel");
         this.add(new LoginContent(this));

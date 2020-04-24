@@ -1,5 +1,7 @@
 package nerdygadgets.backoffice.main.JDBC;
 
+import nerdygadgets.backoffice.main.data.Shaa256;
+
 import java.sql.*;
 
 public class Driver {
@@ -44,6 +46,25 @@ public class Driver {
             return null;
         }
     }
+
+    public static ResultSet login(String username, String password){
+
+        try {
+            password = Shaa256.toHexString(Shaa256.getSHA(password));
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            String sql = "SELECT COUNT(*) FROM people WHERE LogonName = ? AND fixedpassword = ?";
+            PreparedStatement ps = myConn.prepareStatement(sql);
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            ResultSet myRs = ps.executeQuery();
+            return myRs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     //Zo lees je de gegevens uit
     /*ResultSet myRs = Driver.medewerkers();
         try {
@@ -65,6 +86,13 @@ public class Driver {
             PreparedStatement ps = myConn.prepareStatement(sql);
             ps.setString(1, username);
             ResultSet myRs = ps.executeQuery();
+
+    //Functie Orders
+    public static ResultSet orders() {
+        try {
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Statement myStmt = myConn.createStatement();
+            ResultSet myRs = myStmt.executeQuery("SELECT o.OrderID, c.CustomerName , ci.Cityname AS `Leveradres` FROM orders o LEFT JOIN customers c ON o.CustomerID = c.CustomerID LEFT JOIN cities ci ON c.DeliveryCityID = ci.CityID ORDER BY OrderID");
             return myRs;
         } catch (Exception e) {
             e.printStackTrace();

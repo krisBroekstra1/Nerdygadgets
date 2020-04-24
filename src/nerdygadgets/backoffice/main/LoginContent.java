@@ -16,8 +16,6 @@ public class LoginContent extends JPanel implements ActionListener {
     private JPasswordField password;
     private JButton login;
     private JLabel name, passwordL;
-    private String testname = "KRIS";
-    private String testpassword = "KRIS";
     private Frame frame;
 
     public LoginContent(Frame f) {

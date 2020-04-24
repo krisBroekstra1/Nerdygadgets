@@ -82,7 +82,7 @@ public class Driver {
     //Functie Orders
     public static ResultSet orders() {
         try {
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "elke", "");
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             Statement myStmt = myConn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT o.OrderID, c.CustomerName , ci.Cityname AS `Leveradres` FROM orders o LEFT JOIN customers c ON o.CustomerID = c.CustomerID LEFT JOIN cities ci ON c.DeliveryCityID = ci.CityID ORDER BY OrderID");
             return myRs;

@@ -20,21 +20,25 @@ public class LoginContent extends JPanel implements ActionListener {
 
     public LoginContent(Frame f){
         this.frame = f;
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        add(Box.createHorizontalGlue());
-        name = new JLabel("username");
+        setLayout(new FlowLayout());
+        name = new JLabel("Username");
+        //name.setBounds(650,0,80,65);
         username = new JTextField();
-        username.setPreferredSize(new Dimension(100, 20));
+        //username.setBounds(730,20,165,25);
+        username.setPreferredSize(new Dimension(120, 20));
         add(name);
         add(username);
 
-        passwordL = new JLabel("password");
+        passwordL = new JLabel("Password");
+        //passwordL.setBounds(650,60,80,25);
         password = new JPasswordField();
-        password.setPreferredSize(new Dimension(100, 20));
+        //password.setBounds(730,60,165,25);
+        password.setPreferredSize(new Dimension(120, 20));
         add(passwordL);
         add(password);
 
         login = new JButton("LOGIN");
+        //login.setBounds(650,100,80,25);
         add(login);
         login.addActionListener(this);
     }

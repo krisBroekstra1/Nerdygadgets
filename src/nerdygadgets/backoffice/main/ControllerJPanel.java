@@ -10,7 +10,8 @@ public class ControllerJPanel extends JPanel {
         pane.addTab("klanten", new JLabel("klanten"));
         pane.addTab("retours", new orderPanel());
         pane.addTab("test", new JLabel("test"));
-        pane.addTab("Gps Coordinate", new Gpscoördinate());
+        pane.addTab("Gps", new Gpscoördinate());
+        pane.addTab("Route", new Route());
         add(pane);
     }
 }

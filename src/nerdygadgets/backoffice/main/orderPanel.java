@@ -13,16 +13,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class retourPanel extends JPanel implements ActionListener {
+public class orderPanel extends JPanel implements ActionListener {
 
     JTable _table;
     JButton _btnBewerken;
     JLabel label;
 
-    public retourPanel(){
+    public orderPanel(){
         ResultSet rs = Driver.orders();
 
-        label = new JLabel("Retours");
+        label = new JLabel("Orders");
         try {
             _table = new JTable(buildTableModel(rs));
         }catch (SQLException throwables) {

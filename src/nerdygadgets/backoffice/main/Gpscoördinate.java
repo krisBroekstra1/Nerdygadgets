@@ -59,7 +59,6 @@ public class Gpscoördinate extends JPanel implements ActionListener {
     }
 
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == JBadres) {
             Adres = JTadres.getText();
@@ -104,7 +103,7 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             JButton goBack = new JButton("Terug");
             add(goBack);
             goBack.addActionListener(new ActionListener() {
-                @Override
+
                 public void actionPerformed(ActionEvent e) {
                     resetGPSJpanel();
                 }

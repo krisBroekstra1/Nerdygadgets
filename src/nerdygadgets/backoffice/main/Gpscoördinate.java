@@ -193,7 +193,7 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         }
         try {
             double afstand = calculateDistance(latArray.get(0), longArray.get(0), latArray.get(1), longArray.get(1));
-            add(new JLabel("De afstand in km tussen plaats index 0 en index 1 is: " + afstand + " km"));
+            add(new JLabel("De afstand in km tussen plaats: "+ plaatsArray.get(0)+" en "+plaatsArray.get(1)+ " is: " + afstand + " km"));
             System.out.println("De afstand in km tussen plaats index 0 en index 1 is: " + afstand + " km");
             revalidate();
             repaint();

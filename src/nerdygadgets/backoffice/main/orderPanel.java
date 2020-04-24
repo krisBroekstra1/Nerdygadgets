@@ -44,7 +44,7 @@ public class orderPanel extends JPanel implements ActionListener {
 
         add(label);
         add(sp);
-        add(_btnBewerken);
+//        add(_btnBewerken);
     }
 
     public static DefaultTableModel buildTableModel(ResultSet rs)

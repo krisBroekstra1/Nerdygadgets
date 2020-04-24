@@ -5,9 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
-// Java program to calculate SHA hash value
-
     public class Shaa256 {
         public static byte[] getSHA(String input) throws NoSuchAlgorithmException
         {

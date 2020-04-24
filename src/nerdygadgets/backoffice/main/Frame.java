@@ -9,6 +9,7 @@ public class Frame extends JFrame {
         setLayout(new GridLayout());
         setTitle("NerdyGadgets Backoffice");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 }

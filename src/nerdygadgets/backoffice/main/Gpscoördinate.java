@@ -168,7 +168,7 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             } else {
                 for (int i = 0; i < plaatsArray.size(); i++) {
                     System.out.println("doei");
-                    JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " longitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
+                    JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
                     add(JLshowAdres);
                     revalidate();
                     repaint();

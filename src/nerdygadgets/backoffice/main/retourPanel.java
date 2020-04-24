@@ -19,13 +19,13 @@ public class retourPanel extends JPanel implements ActionListener {
     JButton _btnBewerken;
     JLabel label;
 
-    public retourPanel(){
+    public retourPanel() {
         ResultSet rs = Driver.orders();
 
         label = new JLabel("Retours");
         try {
             _table = new JTable(buildTableModel(rs));
-        }catch (SQLException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
@@ -73,8 +73,6 @@ public class retourPanel extends JPanel implements ActionListener {
 
     }
 
-
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == _btnBewerken) {
             _table.setEnabled(true);

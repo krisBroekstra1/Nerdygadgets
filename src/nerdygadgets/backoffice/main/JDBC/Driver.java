@@ -47,7 +47,7 @@ public class Driver {
         }
     }
 
-    public static ResultSet login(String username, String password){
+    public static ResultSet login(String username, String password) {
 
         try {
             password = Shaa256.toHexString(Shaa256.getSHA(password));

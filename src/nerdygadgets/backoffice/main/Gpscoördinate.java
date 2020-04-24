@@ -79,8 +79,9 @@ public class Gpscoördinate extends JPanel implements ActionListener {
                 add(JBnewAddress);
                 revalidate();
                 repaint();
-            } if(Adres.length() <= 2){
-                JOptionPane.showMessageDialog(this, "Je moet meer dan twee characters invoeren!","Error", JOptionPane.ERROR_MESSAGE);
+            }
+            if (Adres.length() <= 2) {
+                JOptionPane.showMessageDialog(this, "Je moet meer dan twee characters invoeren!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         if (e.getSource() == JBgenerate) {
@@ -167,7 +168,7 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             } else {
                 for (int i = 0; i < plaatsArray.size(); i++) {
                     System.out.println("doei");
-                    JLshowAdres = new JLabel("Index: "+ i +" Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
+                    JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
                     add(JLshowAdres);
                     revalidate();
                     repaint();
@@ -176,13 +177,13 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         } catch (Exception e) {
             System.out.println("godver");
         }
-        try{
-            double afstand = calculateDistance(latArray.get(0), longArray.get(0), latArray.get(1),longArray.get(1));
-            add(new JLabel("De afstand in km tussen plaats index 1 en index 2 is: " +afstand + " km"));
-            System.out.println("De afstand in km tussen plaats index 1 en index 2 is: "+ afstand + " km");
+        try {
+            double afstand = calculateDistance(latArray.get(0), longArray.get(0), latArray.get(1), longArray.get(1));
+            add(new JLabel("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km"));
+            System.out.println("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km");
             revalidate();
             repaint();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("rip");
         }
     }
@@ -204,15 +205,16 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         repaint();
     }
 
-    public double calculateDistance(double lat1,double lon1, double lat2, double lon2){
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         //Berekent de afstand tussen twee punten in kilometer;
         double variable1 = lon1 - lon2;
         double afstand = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(variable1));
         afstand = Math.acos(afstand);
         afstand = Math.toDegrees(afstand);
-        afstand = afstand *60*1.1515*1.609344;
+        afstand = afstand * 60 * 1.1515 * 1.609344;
         return afstand;
     }
+
     public ArrayList<String> getPlaatsArray() {
         return plaatsArray;
     }

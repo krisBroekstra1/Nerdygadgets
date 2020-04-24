@@ -51,7 +51,7 @@ public class Driver {
 
         try {
             password = Shaa256.toHexString(Shaa256.getSHA(password));
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "elke", "");
             String sql = "SELECT COUNT(*) FROM people WHERE LogonName = ? AND fixedpassword = ?";
             PreparedStatement ps = myConn.prepareStatement(sql);
             ps.setString(1, username);
@@ -82,7 +82,7 @@ public class Driver {
     //Functie Orders
     public static ResultSet orders() {
         try {
-            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "elke", "");
             Statement myStmt = myConn.createStatement();
             ResultSet myRs = myStmt.executeQuery("SELECT o.OrderID, c.CustomerName , ci.Cityname AS `Leveradres` FROM orders o LEFT JOIN customers c ON o.CustomerID = c.CustomerID LEFT JOIN cities ci ON c.DeliveryCityID = ci.CityID ORDER BY OrderID");
             return myRs;

@@ -20,7 +20,7 @@ public class CustomerPanel extends JPanel implements ActionListener {
 
 
     public CustomerPanel(){
-        ResultSet rs = Driver.getStock();
+        ResultSet rs = Driver.getCustomers();
 
         label = new JLabel("Klanten");
         try {

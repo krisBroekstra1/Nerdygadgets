@@ -7,7 +7,7 @@ public class ControllerJPanel extends JPanel {
         JTabbedPane pane = new JTabbedPane();
 
         pane.addTab("Voorraad", new StockPanel());
-        pane.addTab("Klanten", new JLabel("Klanten"));
+        pane.addTab("Klanten", new CustomerPanel());
         pane.addTab("Orders", new orderPanel());
         pane.addTab("Gps", new Gpscoördinate());
         add(pane);

@@ -106,7 +106,7 @@ public class Driver {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             Statement myStmt = myConn.createStatement();
-            ResultSet myRs = myStmt.executeQuery("SELECT o.StockItemID, o.StockItemName AS `Productnaam`, QuantityOnHand AS `Aantal`FROM wideworldimporters.stockitems o LEFT JOIN stockitemholdings sh ON o.StockItemID = sh.StockItemID");
+            ResultSet myRs = myStmt.executeQuery("SELECT * FROM customer_ned");
             return myRs;
         } catch (Exception e) {
             e.printStackTrace();

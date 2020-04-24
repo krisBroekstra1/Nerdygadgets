@@ -168,7 +168,7 @@ public class Gpscoördinate extends JPanel implements ActionListener {
             } else {
                 for (int i = 0; i < plaatsArray.size(); i++) {
                     System.out.println("doei");
-                    JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " longitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
+                    JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
                     add(JLshowAdres);
                     revalidate();
                     repaint();
@@ -179,8 +179,8 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         }
         try {
             double afstand = calculateDistance(latArray.get(0), longArray.get(0), latArray.get(1), longArray.get(1));
-            add(new JLabel("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km"));
-            System.out.println("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km");
+            add(new JLabel("De afstand in km tussen plaats index 0 en index 1 is: " + afstand + " km"));
+            System.out.println("De afstand in km tussen plaats index 0 en index 1 is: " + afstand + " km");
             revalidate();
             repaint();
         } catch (Exception e) {

@@ -18,7 +18,7 @@ public class LoginContent extends JPanel implements ActionListener {
     private JLabel name, passwordL;
     private Frame frame;
 
-    public LoginContent(Frame f) {
+    public LoginContent(Frame f){
         this.frame = f;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(Box.createHorizontalGlue());
@@ -40,26 +40,26 @@ public class LoginContent extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == login) {
+        if(e.getSource() == login) {
             try {
-                ResultSet myrs = Driver.login(username.getText(), password.getText());
+                ResultSet myrs = Driver.login(username.getText(), String.valueOf(password.getPassword()));
                 if (myrs.next()) {
-                    if (myrs.getRow() == 1) {
-                        LoginData session = LoginData.getInstance();
-                        session.setEmail("HENK@gmail.com");
-                        session.setId("1");
-                        session.setName("KRIS");
-                        session.login();
-                        frame.remove(this);
-                        frame.add(new JLabel("HUTS, Je bent ingelogd"));
-                        frame.revalidate();
-                        frame.repaint();
+                    int rows = Integer.parseInt(myrs.getString("COUNT(*)"));
+                    if (rows == 1) {
+                        LoginData logindata = LoginData.getInstance();
+                        logindata.setEmail("HENK@gmail.com");
+                        logindata.setId("1");
+                        logindata.setName("KRIS");
+                        logindata.login();
+                        frame.setVisible(false);
+                        frame.dispose();
+                        Main.main(new String[0]);
                     } else {
                         System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
                     }
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            }catch (Exception ex){
+
             }
         }
     }

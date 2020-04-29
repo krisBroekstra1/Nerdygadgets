@@ -20,17 +20,16 @@ public class LoginContent extends JPanel implements ActionListener {
 
     public LoginContent(Frame f){
         this.frame = f;
-        setLayout(new FlowLayout());
-        name = new JLabel("Username");
-        //name.setBounds(650,0,80,65);
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        add(Box.createHorizontalGlue());
+        name = new JLabel("Email:");
         username = new JTextField();
         //username.setBounds(730,20,165,25);
         username.setPreferredSize(new Dimension(120, 20));
         add(name);
         add(username);
 
-        passwordL = new JLabel("Password");
-        //passwordL.setBounds(650,60,80,25);
+        passwordL = new JLabel("Wachtwoord:");
         password = new JPasswordField();
         //password.setBounds(730,60,165,25);
         password.setPreferredSize(new Dimension(120, 20));
@@ -45,25 +44,28 @@ public class LoginContent extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == login) {
-                try {
-                    ResultSet myrs = Driver.login(username.getText(), String.valueOf(password.getPassword()));
-                    if (myrs.next()) {
-                        int rows = Integer.parseInt(myrs.getString("COUNT(*)"));
-                        if (rows == 1) {
-                            LoginData logindata = LoginData.getInstance();
-                            logindata.setEmail("HENK@gmail.com");
-                            logindata.setId("1");
-                            logindata.setName("KRIS");
-                            logindata.login();
-                            frame.setVisible(false);
-                            frame.dispose();
-                            Main.main(new String[0]);
-                        } else {
-                            System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
-                        }
+            try {
+                ResultSet myrs = Driver.login(username.getText(), String.valueOf(password.getPassword()));
+                if (myrs.next()) {
+                    int rows = Integer.parseInt(myrs.getString("COUNT(*)"));
+                    if (rows == 1) {
+                        LoginData logindata = LoginData.getInstance();
+                        logindata.setEmail("HENK@gmail.com");
+                        logindata.setId("1");
+                        logindata.setName("KRIS");
+                        logindata.login();
+                        frame.setVisible(false);
+                        frame.dispose();
+                        Main.main(new String[0]);
+                    } else {
+                        System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
+                        this.add(new JLabel("Gebruikersnaam of wachtwoord is onjuist"));
+                        frame.revalidate();
+                        frame.repaint();
                     }
-                }catch (Exception ex){
-                    
+                }
+            }catch (Exception ex){
+
             }
         }
     }

@@ -23,10 +23,10 @@ public class Driver {
         }
     }
     //Zo lees je de gegevens uit
-    /*ResultSet myRs = Driver.medewerkers();
+    /*ResultSet myRs = Driver.adressen();
         try {
         while (myRs.next()) {
-            System.out.println(myRs.getString("DeliveryInstuctions"));
+            System.out.println(myRs.getString("DeliveryInstructions"));
             System.out.println();
         }
     }
@@ -47,7 +47,7 @@ public class Driver {
         }
     }
 
-    public static ResultSet login(String username, String password){
+    public static ResultSet login(String username, String password) {
 
         try {
             password = Shaa256.toHexString(Shaa256.getSHA(password));
@@ -79,7 +79,6 @@ public class Driver {
         e.printStackTrace();
     }*/
 
-
     //Functie Orders
     public static ResultSet orders() {
         try {
@@ -92,4 +91,27 @@ public class Driver {
             return null;
         }
     }
+    public static ResultSet getStock() {
+        try {
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Statement myStmt = myConn.createStatement();
+            ResultSet myRs = myStmt.executeQuery("SELECT o.StockItemID, o.StockItemName AS `Productnaam`, QuantityOnHand AS `Aantal`FROM wideworldimporters.stockitems o LEFT JOIN stockitemholdings sh ON o.StockItemID = sh.StockItemID ORDER BY o.StockItemID");
+            return myRs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static ResultSet getCustomers() {
+        try {
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Statement myStmt = myConn.createStatement();
+            ResultSet myRs = myStmt.executeQuery("SELECT * FROM customer_ned");
+            return myRs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

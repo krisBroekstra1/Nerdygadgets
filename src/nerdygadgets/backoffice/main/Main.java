@@ -3,9 +3,9 @@ package nerdygadgets.backoffice.main;
 import nerdygadgets.backoffice.main.data.LoginData;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         LoginData d = LoginData.getInstance();
-        if(d.isloggedin){
+        if (d.isloggedin) {
             Frame f = new Frame(1000, 1000);
             f.add(new ControllerJPanel());
             f.revalidate();

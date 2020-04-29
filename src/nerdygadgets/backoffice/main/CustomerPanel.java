@@ -3,7 +3,6 @@ package nerdygadgets.backoffice.main;
 import nerdygadgets.backoffice.main.JDBC.Driver;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,19 +12,20 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class retourPanel extends JPanel implements ActionListener {
+public class CustomerPanel extends JPanel implements ActionListener {
 
     JTable _table;
     JButton _btnBewerken;
     JLabel label;
 
-    public retourPanel(){
-        ResultSet rs = Driver.orders();
 
-        label = new JLabel("Retours");
+    public CustomerPanel(){
+        ResultSet rs = Driver.getCustomers();
+
+        label = new JLabel("Klanten");
         try {
             _table = new JTable(buildTableModel(rs));
-        }catch (SQLException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
@@ -44,7 +44,7 @@ public class retourPanel extends JPanel implements ActionListener {
 
         add(label);
         add(sp);
-        add(_btnBewerken);
+//        add(_btnBewerken);
     }
 
     public static DefaultTableModel buildTableModel(ResultSet rs)
@@ -73,8 +73,6 @@ public class retourPanel extends JPanel implements ActionListener {
 
     }
 
-
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == _btnBewerken) {
             _table.setEnabled(true);

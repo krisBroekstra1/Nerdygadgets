@@ -1,6 +1,9 @@
 package nerdygadgets.backoffice.main;
 
+import com.mysql.cj.xdevapi.Table;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,7 +58,7 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         JTadres = new JTextField(10);
         add(JTadres);
 
-        JBadres = new JButton("Send adres");
+        JBadres = new JButton("Verstuur adres");
         JBadres.addActionListener(this);
         add(JBadres);
 
@@ -159,6 +166,12 @@ public class Gpscoördinate extends JPanel implements ActionListener {
 
     public void getAdressen() {
         try {
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Plaats");
+            model.addColumn("Longtitude");
+            model.addColumn("Latitude");
+            model.addRow(new Object[]{"Plaats","Lontitude","Latitude"});
+            JTable jtable = new JTable(model);
             if (plaatsArray.isEmpty()) {
                 JLshowAdres = new JLabel("Er zijn geen gegevens!");
                 add(JLshowAdres);
@@ -167,20 +180,21 @@ public class Gpscoördinate extends JPanel implements ActionListener {
                 return;
             } else {
                 for (int i = 0; i < plaatsArray.size(); i++) {
-                    System.out.println("doei");
-                    JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
-                    add(JLshowAdres);
-                    revalidate();
-                    repaint();
+                    model.addRow(new Object[]{plaatsArray.get(i), String.valueOf(longArray.get(i)), String.valueOf(latArray.get(i))});
+                    //JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " longitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
+                    //add(JLshowAdres);
                 }
+                add(jtable);
+                revalidate();
+                repaint();
             }
         } catch (Exception e) {
             System.out.println("godver");
         }
         try {
             double afstand = calculateDistance(latArray.get(0), longArray.get(0), latArray.get(1), longArray.get(1));
-            add(new JLabel("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km"));
-            System.out.println("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km");
+            add(new JLabel("De afstand in km tussen "+ plaatsArray.get(0)+" en "+plaatsArray.get(1)+ " is: " + afstand + " km"));
+            System.out.println("De afstand in km tussen "+ plaatsArray.get(0)+" en "+plaatsArray.get(1)+ " is: " + afstand + " km");
             revalidate();
             repaint();
         } catch (Exception e) {
@@ -213,6 +227,32 @@ public class Gpscoördinate extends JPanel implements ActionListener {
         afstand = Math.toDegrees(afstand);
         afstand = afstand * 60 * 1.1515 * 1.609344;
         return afstand;
+    }
+
+    public static DefaultTableModel buildTableModel(ResultSet rs)
+            throws SQLException {
+
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // names of columns
+        Vector<String> columnNames = new Vector<String>();
+        int columnCount = metaData.getColumnCount();
+        for (int column = 1; column <= columnCount; column++) {
+            columnNames.add(metaData.getColumnName(column));
+        }
+
+        // data of the table
+        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        while (rs.next()) {
+            Vector<Object> vector = new Vector<Object>();
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                vector.add(rs.getObject(columnIndex));
+            }
+            data.add(vector);
+        }
+
+        return new DefaultTableModel(data, columnNames);
+
     }
 
     public ArrayList<String> getPlaatsArray() {

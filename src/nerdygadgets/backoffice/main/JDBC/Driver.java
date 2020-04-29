@@ -91,4 +91,27 @@ public class Driver {
             return null;
         }
     }
+    public static ResultSet getStock() {
+        try {
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Statement myStmt = myConn.createStatement();
+            ResultSet myRs = myStmt.executeQuery("SELECT o.StockItemID, o.StockItemName AS `Productnaam`, QuantityOnHand AS `Aantal`FROM wideworldimporters.stockitems o LEFT JOIN stockitemholdings sh ON o.StockItemID = sh.StockItemID ORDER BY o.StockItemID");
+            return myRs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static ResultSet getCustomers() {
+        try {
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            Statement myStmt = myConn.createStatement();
+            ResultSet myRs = myStmt.executeQuery("SELECT * FROM customer_ned");
+            return myRs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

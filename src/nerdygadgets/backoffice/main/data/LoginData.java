@@ -6,7 +6,7 @@ public class LoginData {
     private String id;
     private String name;
     private String email;
-    public Boolean isloggedin = false;
+    public Boolean isloggedin = true;
 
     private LoginData(){
 

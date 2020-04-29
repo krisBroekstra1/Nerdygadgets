@@ -20,8 +20,8 @@ public class LoginContent extends JPanel implements ActionListener {
 
     public LoginContent(Frame f){
         this.frame = f;
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        add(Box.createHorizontalGlue());
+        setLayout(new GridLayout(5,1));
+
         name = new JLabel("Email:");
         username = new JTextField();
         //username.setBounds(730,20,165,25);

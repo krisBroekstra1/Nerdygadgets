@@ -4,6 +4,8 @@ import nerdygadgets.backoffice.main.JDBC.Driver;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,7 +27,16 @@ public class orderPanel extends JPanel implements ActionListener {
 
         label = new JLabel("Orders");
         try {
-            _table = new JTable(buildTableModel(rs));
+            _table = new JTable(buildTableModel(rs)){
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    if (column == 0) {
+                        return false;
+                    }  else {
+                        return true;
+                    }
+                }
+            };
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -37,6 +48,16 @@ public class orderPanel extends JPanel implements ActionListener {
         _table.setBounds(30, 40, 200, 200);
         _table.getTableHeader().setBackground(new Color(217, 43, 133));
         _table.setEnabled(false);
+        _table.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = _table.getSelectedRow();
+                String id = _table.getModel().getValueAt(row, 0).toString(); //id
+                String cust = _table.getModel().getValueAt(row, 1).toString(); //Customername
+                String city = _table.getModel().getValueAt(row, 2).toString(); //City
+//                Driver.UpdateOrder(id, cust, city);
+            }
+        });
 //        table.setBackground(new Color(255,255,255));
 
         label.setFont(new Font("Serif", Font.PLAIN, 24));
@@ -45,7 +66,7 @@ public class orderPanel extends JPanel implements ActionListener {
 
         add(label);
         add(sp);
-//        add(_btnBewerken);
+        add(_btnBewerken);
     }
 
     public static DefaultTableModel buildTableModel(ResultSet rs)
@@ -54,7 +75,7 @@ public class orderPanel extends JPanel implements ActionListener {
         ResultSetMetaData metaData = rs.getMetaData();
 
         // names of columns
-        Vector<String> columnNames = new Vector<String>();
+        Vector<String> columnNames = new Vector<String>();//Alle methodes van Vector zijn synchronized en van ArrayList niet.
         int columnCount = metaData.getColumnCount();
         for (int column = 1; column <= columnCount; column++) {
             columnNames.add(metaData.getColumnName(column));
@@ -71,7 +92,6 @@ public class orderPanel extends JPanel implements ActionListener {
         }
 
         return new DefaultTableModel(data, columnNames);
-
     }
 
     public void actionPerformed(ActionEvent e) {

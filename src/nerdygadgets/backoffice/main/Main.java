@@ -1,14 +1,21 @@
 package nerdygadgets.backoffice.main;
 
+import nerdygadgets.backoffice.main.data.LoginData;
+
 public class Main {
-    public static void main(String[] args){
-        System.out.println("Werkt ie zo bij iedereen?");
-        System.out.println("Of niet? test");
-        System.out.println("hoi");
-        System.out.println("Dit os heel er mooir");
-        System.out.println("Zet jij dit hier even neer");
-        System.out.println("als dat jassie van jou beschadigd is");
-        System.out.println("Print er bij");
-        System.out.println("nog een print er bij");
+    public static void main(String[] args) {
+        LoginData d = LoginData.getInstance();
+        if (d.isloggedin) {
+            Frame f = new Frame(1000, 1000);
+            f.add(new ControllerJPanel());
+            f.revalidate();
+            f.repaint();
+        } else {
+            Frame f2 = new Frame(350, 350);
+            f2.setTitle("Backoffice - Login");
+            f2.add(new LoginContent(f2));
+            f2.revalidate();
+            f2.repaint();
+        }
     }
 }

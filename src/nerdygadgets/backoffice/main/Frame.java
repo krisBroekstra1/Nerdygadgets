@@ -1,8 +1,15 @@
 package nerdygadgets.backoffice.main;
 
-public class Frame {
-    public Frame (){
+import javax.swing.*;
+import java.awt.*;
+public class Frame extends JFrame {
 
+    public Frame(int width, int height) {
+        setSize(width, height);
+        setLayout(new GridLayout());
+        setTitle("NerdyGadgets Backoffice");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
-
 }

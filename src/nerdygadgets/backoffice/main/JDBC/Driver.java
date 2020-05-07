@@ -1,5 +1,6 @@
 package nerdygadgets.backoffice.main.JDBC;
 
+import com.mysql.cj.protocol.Resultset;
 import nerdygadgets.backoffice.main.data.Shaa256;
 
 import java.sql.*;
@@ -155,6 +156,19 @@ public class Driver {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static ResultSet getOrderCities(){
+        try{
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode FROM orders JOIN customer_ned as cn ON orders.CustomerID = customer_ned.CustomerID WHERE Delivered = false AND Country = 'USA'";
+            PreparedStatement preparedstmt = myConn.prepareStatement(query);
+            ResultSet result = preparedstmt.executeQuery();
+            return result;
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 }

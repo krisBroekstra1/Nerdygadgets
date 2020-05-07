@@ -133,7 +133,7 @@ public class Route extends JPanel implements ActionListener {
                 String[] longSplit = coordsSplit[1].split(":");
                 lon = Double.parseDouble(longSplit[1]);
                 lat = Double.parseDouble(latSplit[1]);
-                
+
                 return new Coördinates(lon, lat);
             }
             if (coordsStringone.length() == 11) {

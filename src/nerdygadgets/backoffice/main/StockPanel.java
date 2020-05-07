@@ -3,7 +3,6 @@ package nerdygadgets.backoffice.main;
 import nerdygadgets.backoffice.main.JDBC.Driver;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,17 +12,17 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class orderPanel extends JPanel implements ActionListener {
+public class StockPanel extends JPanel implements ActionListener {
 
     JTable _table;
     JButton _btnBewerken;
     JLabel label;
 
 
-    public orderPanel(){
-        ResultSet rs = Driver.orders();
+    public StockPanel(){
+        ResultSet rs = Driver.getStock();
 
-        label = new JLabel("Orders");
+        label = new JLabel("Voorraad");
         try {
             _table = new JTable(buildTableModel(rs));
         } catch (SQLException throwables) {

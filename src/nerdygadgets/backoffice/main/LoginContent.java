@@ -22,13 +22,13 @@ public class LoginContent extends JPanel implements ActionListener {
         this.frame = f;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(Box.createHorizontalGlue());
-        name = new JLabel("username");
+        name = new JLabel("Email:");
         username = new JTextField();
         username.setPreferredSize(new Dimension(100, 20));
         add(name);
         add(username);
 
-        passwordL = new JLabel("password");
+        passwordL = new JLabel("Wachtwoord:");
         password = new JPasswordField();
         password.setPreferredSize(new Dimension(100, 20));
         add(passwordL);
@@ -56,6 +56,9 @@ public class LoginContent extends JPanel implements ActionListener {
                         Main.main(new String[0]);
                     } else {
                         System.out.println("De gebruikersnaam of het wachtwoord is onjuist");
+                        this.add(new JLabel("Gebruikersnaam of wachtwoord is onjuist"));
+                        frame.revalidate();
+                        frame.repaint();
                     }
                 }
             }catch (Exception ex){

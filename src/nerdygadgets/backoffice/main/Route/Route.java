@@ -1,6 +1,7 @@
 package nerdygadgets.backoffice.main.Route;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,41 +35,82 @@ public class Route extends JPanel implements ActionListener {
     private JButton JBgetAdressen;
 
     HashMap<String, Coördinates> adressen;
-    JButton test;
+    HashMap<String, Coördinates> buffer;
 
     public Route() throws IOException {
         setLayout(new FlowLayout());
         setSize(300, 300);
         setVisible(true);
+        plaatsArray = new ArrayList<>();
+        latArray = new ArrayList<>();
+        longArray = new ArrayList<>();
+
+        JBgetAdressen = new JButton("Verkrijg adressen");
+        JBgetAdressen.addActionListener(this);
+        add(JBgetAdressen);
+
         JTadres = new JTextField(10);
         add(JTadres);
-        JBgenerate = new JButton("add");
-        JBgenerate.addActionListener(this);
-        add(JBgenerate);
+
+        JBadres = new JButton("Send adres");
+        JBadres.addActionListener(this);
+        add(JBadres);
+        buffer = new HashMap<>();
         adressen = new HashMap<>();
-        adressen.put("Start", generate("Zwolle"));
-        test = new JButton("test");
-        test.addActionListener(this);
-        add(test);
+        adressen.put("Zwolle", generate("Zwolle"));
+        buffer.put("Zwolle", generate("Zwolle"));
+
     }
 
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == JBgenerate) {
+        if (e.getSource() == JBadres) {
             Adres = JTadres.getText();
-            if (!checkSpecialCharacters(Adres)) {
-                try {
-                    adressen.put(Adres, generate(Adres));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+            if (Adres.length() > 2) {
+                if (Adres.isEmpty() || checkSpecialCharacters(Adres)) {
+                    JOptionPane.showMessageDialog(getParent(), "Het invoerveld is leeg of bevat niet toegestane characters!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-            } else {
-                System.out.println(Adres);
+                JLadres = new JLabel("Is dit uw adres:  " + Adres + "?");
+                JBgenerate = new JButton("Ja!");
+                JBgenerate.addActionListener(this);
+                add(JLadres);
+                add(JBgenerate);
+                remove(JBadres);
+                JBnewAddress = new JButton("Nieuw Adres");
+                JBnewAddress.addActionListener(this);
+                add(JBnewAddress);
+                revalidate();
+                repaint();
+            }
+            if (Adres.length() <= 2) {
+                JOptionPane.showMessageDialog(this, "Je moet meer dan twee characters invoeren!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        if (e.getSource() == test) {
-            System.out.println(getPath(adressen));
-            System.out.println(adressen);
+        if (e.getSource() == JBgenerate) {
+            try {
+                adressen.put(Adres, generate(Adres));
+                buffer.put(Adres, generate(Adres));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        if (e.getSource() == JBnewAddress) {
+            resetGPSJpanel();
+        }
+
+
+        if (e.getSource() == JBgetAdressen) {
+            removeAll();
+            getAdressen();
+            JButton goBack = new JButton("Terug");
+            add(goBack);
+            goBack.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    resetGPSJpanel();
+                }
+            });
         }
     }
 
@@ -84,22 +126,14 @@ public class Route extends JPanel implements ActionListener {
 
             //convert String into coords
             String coordsStringone = rd.readLine();
-            System.out.println(coordsStringone);
             if (coordsStringone.length() > 11) {
                 String coords = coordsStringone.substring(11, 60);
-                System.out.println(coords);
                 String[] coordsSplit = coords.split(",");
                 String[] latSplit = coordsSplit[0].split(":");
                 String[] longSplit = coordsSplit[1].split(":");
                 lon = Double.parseDouble(longSplit[1]);
                 lat = Double.parseDouble(latSplit[1]);
-                System.out.println(latSplit[1]);
-                System.out.println(longSplit[1]);
-                //print coords on dialog
-                JLcoords = new JLabel("Latitude: " + lat + " Longitude: " + lon);
-                add(JLcoords);
-                //add reset button
-                JOptionPane.showMessageDialog(this, Adres + " is toegevoegd!", "Succes!", JOptionPane.INFORMATION_MESSAGE);
+                
                 return new Coördinates(lon, lat);
             }
             if (coordsStringone.length() == 11) {
@@ -144,13 +178,12 @@ public class Route extends JPanel implements ActionListener {
         return afstand;
     }
 
-    public String getShortestNode(HashMap<String, Coördinates> hm,String start) {
+    public String getShortestNode(HashMap<String, Coördinates> hm, String start) {
         String startNode = start;
-        String shortestNode = "Start";
+        String shortestNode = "Zwolle";
         Double shortestDistance = Double.MAX_VALUE;
         for (Map.Entry<String, Coördinates> all : hm.entrySet()) {
-            System.out.println(all.getKey());
-            if(!(all.getKey().equals(startNode))){
+            if (!(all.getKey().equals(startNode))) {
                 double dis = calculateDistance(hm.get(startNode), all.getValue());
                 if (dis < shortestDistance) {
                     shortestDistance = dis;
@@ -158,32 +191,55 @@ public class Route extends JPanel implements ActionListener {
                 }
             }
         }
-        System.out.println(shortestDistance);
         return shortestNode;
     }
-    public String getPath(HashMap<String, Coördinates> hm){
-        String path = "Start";
-        String previous = "Start";
-        String currentPath = "Start";
-        int size = hm.size()-1;
+
+    public String getPath(HashMap<String, Coördinates> hm) throws IOException {
+        String path = "Zwolle";
+        String previous = "Zwolle";
+        String currentPath = "Zwolle";
+        int size = hm.size() - 1;
         for (int i = 0; i < size; i++) {
-            currentPath = getShortestNode(hm,previous);
-            path = path+currentPath;
+            System.out.println(hm.get("Zwolle"));
+            currentPath = getShortestNode(hm, previous);
+            path+="->";
+            path = path + currentPath;
             hm.remove(previous);
             previous = currentPath;
         }
+        System.out.println(path);
         return path;
     }
 
-    public ArrayList<String> getPlaatsArray() {
-        return plaatsArray;
-    }
+    public void getAdressen() {
+        try {
+            if (adressen.isEmpty()) {
+                JLshowAdres = new JLabel("Er zijn geen gegevens!");
+                add(JLshowAdres);
+                revalidate();
+                repaint();
+                return;
+            } else {
+                String route = getPath(adressen);
+                JLabel JLroute = new JLabel("De kortste route is " + route);
+                DefaultTableModel model = new DefaultTableModel();
+                model.addColumn("Plaats");
+                model.addColumn("Longtitude");
+                model.addColumn("Latitude");
+                model.addRow(new Object[]{"Plaats", "Lontitude", "Latitude"});
+                JTable jtable = new JTable(model);
 
-    public ArrayList<Double> getLatArray() {
-        return latArray;
-    }
-
-    public ArrayList<Double> getLongArray() {
-        return longArray;
+                for (Map.Entry<String, Coördinates> all : buffer.entrySet()) {
+                    model.addRow(new Object[]{all.getKey(), all.getValue().getLongtitude(), all.getValue().getLatitude()});
+                    adressen.put(all.getKey(),all.getValue());
+                }
+                add(jtable);
+                add(JLroute);
+                revalidate();
+                repaint();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

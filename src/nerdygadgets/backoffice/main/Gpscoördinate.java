@@ -1,6 +1,7 @@
 package nerdygadgets.backoffice.main;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -159,6 +160,12 @@ public class Gpscoördinate extends JPanel implements ActionListener {
 
     public void getAdressen() {
         try {
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Plaats");
+            model.addColumn("Longtitude");
+            model.addColumn("Latitude");
+            model.addRow(new Object[]{"Plaats","Lontitude","Latitude"});
+            JTable jtable = new JTable(model);
             if (plaatsArray.isEmpty()) {
                 JLshowAdres = new JLabel("Er zijn geen gegevens!");
                 add(JLshowAdres);
@@ -167,20 +174,21 @@ public class Gpscoördinate extends JPanel implements ActionListener {
                 return;
             } else {
                 for (int i = 0; i < plaatsArray.size(); i++) {
-                    System.out.println("doei");
-                    JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " lonitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
-                    add(JLshowAdres);
-                    revalidate();
-                    repaint();
+                    model.addRow(new Object[]{plaatsArray.get(i), String.valueOf(longArray.get(i)), String.valueOf(latArray.get(i))});
+                    //JLshowAdres = new JLabel("Index: " + i + " Adres: " + plaatsArray.get(i) + " longitude: " + longArray.get(i) + " latitude: " + latArray.get(i));
+                    //add(JLshowAdres);
                 }
+                add(jtable);
+                revalidate();
+                repaint();
             }
         } catch (Exception e) {
             System.out.println("godver");
         }
         try {
             double afstand = calculateDistance(latArray.get(0), longArray.get(0), latArray.get(1), longArray.get(1));
-            add(new JLabel("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km"));
-            System.out.println("De afstand in km tussen plaats index 1 en index 2 is: " + afstand + " km");
+            add(new JLabel("De afstand in km tussen "+ plaatsArray.get(0)+" en "+plaatsArray.get(1)+ " is: " + afstand + " km"));
+            System.out.println("De afstand in km tussen "+ plaatsArray.get(0)+" en "+plaatsArray.get(1)+ " is: " + afstand + " km");
             revalidate();
             repaint();
         } catch (Exception e) {

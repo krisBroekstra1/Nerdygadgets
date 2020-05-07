@@ -1,9 +1,12 @@
 package nerdygadgets.backoffice.main;
 
+import nerdygadgets.backoffice.main.Route.Route;
 import nerdygadgets.backoffice.main.data.LoginData;
 
+import java.io.IOException;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         LoginData d = LoginData.getInstance();
         if (d.isloggedin) {
             Frame f = new Frame(1000, 1000);

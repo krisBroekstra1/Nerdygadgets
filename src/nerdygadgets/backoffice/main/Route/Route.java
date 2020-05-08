@@ -88,9 +88,13 @@ public class Route extends JPanel implements ActionListener {
             }
         }
         if (e.getSource() == JBgenerate) {
+            Coördinates coords;
             try {
-                adressen.put(Adres, generate(Adres));
-                buffer.put(Adres, generate(Adres));
+                coords = generate(Adres);
+                if (coords != null) {
+                    adressen.put(Adres, coords);
+                    buffer.put(Adres, coords);
+                }
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -138,6 +142,7 @@ public class Route extends JPanel implements ActionListener {
             }
             if (coordsStringone.length() == 11) {
                 JOptionPane.showMessageDialog(this, "Levert geen resultaat op, probeer opnieuw!", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
             }
             revalidate();
             repaint();
@@ -166,6 +171,10 @@ public class Route extends JPanel implements ActionListener {
     }
 
     public double calculateDistance(Coördinates c1, Coördinates c2) {
+        if(c1 == null|| c2 == null){
+            System.out.println("Coordinaten zijn null, alles kapot!");
+            return -1;
+        }
         //Berekent de afstand tussen twee punten in kilometer;
         if (c1.equals(c2)) {
             return 0;
@@ -202,7 +211,7 @@ public class Route extends JPanel implements ActionListener {
         for (int i = 0; i < size; i++) {
             System.out.println(hm.get("Zwolle"));
             currentPath = getShortestNode(hm, previous);
-            path+="->";
+            path += "->";
             path = path + currentPath;
             hm.remove(previous);
             previous = currentPath;
@@ -231,7 +240,7 @@ public class Route extends JPanel implements ActionListener {
 
                 for (Map.Entry<String, Coördinates> all : buffer.entrySet()) {
                     model.addRow(new Object[]{all.getKey(), all.getValue().getLongtitude(), all.getValue().getLatitude()});
-                    adressen.put(all.getKey(),all.getValue());
+                    adressen.put(all.getKey(), all.getValue());
                 }
                 add(jtable);
                 add(JLroute);

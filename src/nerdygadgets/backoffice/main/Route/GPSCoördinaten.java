@@ -38,4 +38,21 @@ public class GPSCoördinaten {
         }
         return null;
     }
+
+    public double calculateDistance(Coördinates c1, Coördinates c2) {
+        if(c1 == null|| c2 == null){
+            System.out.println("Coordinaten zijn null, alles kapot!");
+            return -1;
+        }
+        //Berekent de afstand tussen twee punten in kilometer;
+        if (c1.equals(c2)) {
+            return 0;
+        }
+        double variable1 = c1.getLongtitude() - c2.getLongtitude();
+        double afstand = Math.sin(Math.toRadians(c1.getLatitude())) * Math.sin(Math.toRadians(c2.getLatitude())) + Math.cos(Math.toRadians(c1.getLatitude())) * Math.cos(Math.toRadians(c2.getLatitude())) * Math.cos(Math.toRadians(variable1));
+        afstand = Math.acos(afstand);
+        afstand = Math.toDegrees(afstand);
+        afstand = afstand * 60 * 1.1515 * 1.609344;
+        return afstand;
+    }
 }

@@ -2,11 +2,12 @@ package nerdygadgets.backoffice.main.data;
 
 import nerdygadgets.backoffice.main.Gpscoördinate;
 import nerdygadgets.backoffice.main.JDBC.Driver;
+import nerdygadgets.backoffice.main.Route.Route;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class GenerateRouteCities extends Gpscoördinate {
+public class GenerateRouteCities {
 
     private CustomerAddress customeraddress;
     private ArrayList<CustomerAddress> allCities = new ArrayList<CustomerAddress>();
@@ -19,7 +20,6 @@ public class GenerateRouteCities extends Gpscoördinate {
     }
 
     public void getOrderCities(){
-//        if()
     }
 
     private void getAllCities(){

@@ -48,16 +48,16 @@ public class orderPanel extends JPanel implements ActionListener {
         _table.setBounds(30, 40, 200, 200);
         _table.getTableHeader().setBackground(new Color(217, 43, 133));
         _table.setEnabled(false);
-        _table.getModel().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int row = _table.getSelectedRow();
-                String id = _table.getModel().getValueAt(row, 0).toString(); //id
-                String cust = _table.getModel().getValueAt(row, 1).toString(); //Customername
-                String city = _table.getModel().getValueAt(row, 2).toString(); //City
-//                Driver.UpdateOrder(id, cust, city);
-            }
-        });
+//        _table.getModel().addTableModelListener(new TableModelListener() {
+//            @Override
+//            public void tableChanged(TableModelEvent e) {
+//                int row = _table.getSelectedRow();
+//                String id = _table.getModel().getValueAt(row, 0).toString(); //id
+//                String cust = _table.getModel().getValueAt(row, 1).toString(); //Customername
+//                String city = _table.getModel().getValueAt(row, 2).toString(); //City
+////                Driver.UpdateOrder(id, cust, city);
+//            }
+//        });
 //        table.setBackground(new Color(255,255,255));
 
         label.setFont(new Font("Serif", Font.PLAIN, 24));
@@ -66,7 +66,7 @@ public class orderPanel extends JPanel implements ActionListener {
 
         add(label);
         add(sp);
-        add(_btnBewerken);
+//        add(_btnBewerken);
     }
 
     public static DefaultTableModel buildTableModel(ResultSet rs)

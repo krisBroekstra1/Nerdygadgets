@@ -19,7 +19,7 @@ public class GenerateRouteCities extends Gpscoördinate {
     }
 
     public void getOrderCities(){
-        if()
+//        if()
     }
 
     private void getAllCities(){

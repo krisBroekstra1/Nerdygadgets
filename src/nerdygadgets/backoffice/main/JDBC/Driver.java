@@ -161,7 +161,7 @@ public class Driver {
     public static ResultSet getOrderCities(){
         try{
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
-            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode FROM orders JOIN customer_ned as cn ON orders.CustomerID = customer_ned.CustomerID WHERE Delivered = false AND Country = 'USA'";
+            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED'";
             PreparedStatement preparedstmt = myConn.prepareStatement(query);
             ResultSet result = preparedstmt.executeQuery();
             return result;

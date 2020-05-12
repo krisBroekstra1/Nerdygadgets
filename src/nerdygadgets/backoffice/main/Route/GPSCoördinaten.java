@@ -1,11 +1,15 @@
 package nerdygadgets.backoffice.main.Route;
 
+import com.mysql.cj.xdevapi.JsonParser;
+import com.mysql.cj.xdevapi.JsonString;
+
 import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+
 
 public class GPSCoördinaten {
     private double lon,lat;
@@ -22,6 +26,8 @@ public class GPSCoördinaten {
             //convert String into coords
             String coordsStringone = rd.readLine();
             if (coordsStringone.length() > 11) {
+                System.out.println(coordsStringone);
+                
                 String coords = coordsStringone.substring(11, 60);
                 String[] coordsSplit = coords.split(",");
                 String[] latSplit = coordsSplit[0].split(":");

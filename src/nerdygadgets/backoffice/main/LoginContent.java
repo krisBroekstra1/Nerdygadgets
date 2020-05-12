@@ -1,6 +1,6 @@
 package nerdygadgets.backoffice.main;
 
-
+import com.mysql.cj.log.Log;
 import nerdygadgets.backoffice.main.JDBC.Driver;
 import nerdygadgets.backoffice.main.data.LoginData;
 

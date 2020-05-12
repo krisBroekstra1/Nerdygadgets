@@ -1,6 +1,5 @@
 package nerdygadgets.backoffice.main;
 
-import com.mysql.cj.xdevapi.Table;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

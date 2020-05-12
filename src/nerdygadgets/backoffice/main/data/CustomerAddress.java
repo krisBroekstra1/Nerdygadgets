@@ -7,6 +7,11 @@ public class CustomerAddress {
     private String postalcode;
     private String orderid;
 
+    public CustomerAddress(String city, String address){
+        this.address = address;
+        this.city = city;
+    }
+
     public String getAddress() {
         return address;
     }

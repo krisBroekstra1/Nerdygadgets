@@ -1,6 +1,8 @@
 package nerdygadgets.backoffice.main;
 
 import nerdygadgets.backoffice.main.Route.Route;
+import nerdygadgets.backoffice.main.data.CustomerAddress;
+import nerdygadgets.backoffice.main.data.GenerateRouteCities;
 import nerdygadgets.backoffice.main.data.LoginData;
 
 import java.io.IOException;
@@ -19,6 +21,8 @@ public class Main {
             f2.add(new LoginContent(f2));
             f2.revalidate();
             f2.repaint();
+            GenerateRouteCities c = new GenerateRouteCities(new CustomerAddress("de wijk", "oosterakker"));
+            c.getOrderCities();
         }
     }
 }

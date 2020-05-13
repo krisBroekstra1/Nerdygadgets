@@ -32,6 +32,7 @@ public class GenerateRouteCities {
 
     public void getOrderCities(){
         getAllCities();
+        selectedCities.add(this.customeraddress);
         try{
             for(CustomerAddress s: allCities){
                 Coördinates c = gps.generate(s.getCity() + " " + s.getAddress());

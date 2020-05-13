@@ -16,6 +16,7 @@ import java.util.Map;
 public class NeigerstNeighbour extends JPanel implements ActionListener {
     private GenerateRouteCities rc = new GenerateRouteCities(new CustomerAddress("Heeten", "Stokvisweg 14"));
     private ArrayList<CustomerAddress> AlgoArray;
+    private static int distance = 0;
 
     public NeigerstNeighbour() {
         setLayout(new FlowLayout());
@@ -35,6 +36,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
                 ArrayList<CustomerAddress> result = findPath2(AlgoArray);
                 System.out.println("After algorithm:");
+                System.out.println("Distance: "+ distance+ " km");
                 for (CustomerAddress c:result
                      ) {
                     System.out.println(c.getCity()+ " - "+  c.getAddress());
@@ -74,12 +76,13 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
             }
         }
+        distance += shortestDistance;
         return shortestNode;
     }
     public ArrayList<CustomerAddress> findPath2(ArrayList<CustomerAddress> arl){
         ArrayList<CustomerAddress> returnvalue = new ArrayList<>();
         CustomerAddress start = new CustomerAddress("Zwolle", "Windesheim");
-        start.setCoördinaten(new Coördinates(52.5167747,6.0830219));
+        start.setCoördinaten(new Coördinates(6.0830219,52.5167747));
         returnvalue.add(start);
 
         ArrayList<CustomerAddress> buffer = arl;

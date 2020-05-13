@@ -23,7 +23,7 @@ public class GenerateRouteCities {
         try{
             this.customeraddress = ca;
             gps = new GPSCoördinaten();
-            //coordinates = gps.generate(customeraddress.getCity() + " " + customeraddress.getAddress());
+            coordinates = gps.generate(customeraddress.getCity() + " " + customeraddress.getAddress());
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -34,20 +34,17 @@ public class GenerateRouteCities {
         getAllCities();
         try{
             for(CustomerAddress s: allCities){
-                System.out.println(s.getCity() + ":" + s.getAddress());
-                Coördinates c = gps.generate(customeraddress.getCity() + " " + customeraddress.getAddress());
-                //System.out.println(c.getLatitude() + ":" + c.getLongtitude());
-                //double distance = gps.calculateDistance(coordinates, c);
-                //if(distance <= 50.00){
-                  //  selectedCities.add(s);
-                //}
+                Coördinates c = gps.generate(s.getCity() + " " + s.getAddress());
+                double distance = gps.calculateDistance(coordinates, c);
+                if(distance <= 50.00){
+                    selectedCities.add(s);
+                    System.out.println(s.getCity());
+                }
             }
-
             System.out.println(selectedCities);
         } catch(Exception ex){
             ex.printStackTrace();
         }
-        System.out.println(allCities);
     }
 
     private void getAllCities(){

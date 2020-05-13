@@ -2,6 +2,9 @@ package nerdygadgets.backoffice.main.Route;
 
 import com.mysql.cj.xdevapi.JsonParser;
 import com.mysql.cj.xdevapi.JsonString;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import javax.swing.*;
 import java.io.BufferedReader;
@@ -13,6 +16,7 @@ import java.net.URL;
 
 public class GPSCoördinaten {
     private double lon,lat;
+    private JSONParser parser = new JSONParser();
 
     public Coördinates generate(String adres) throws IOException {
         String apiKey = "96e20cadb6a7778960dd6d2e55d01610";
@@ -27,7 +31,7 @@ public class GPSCoördinaten {
             String coordsStringone = rd.readLine();
             if (coordsStringone.length() > 11) {
                 System.out.println(coordsStringone);
-                
+
                 String coords = coordsStringone.substring(11, 60);
                 String[] coordsSplit = coords.split(",");
                 String[] latSplit = coordsSplit[0].split(":");

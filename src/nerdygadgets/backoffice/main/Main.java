@@ -21,8 +21,6 @@ public class Main {
             f2.add(new LoginContent(f2));
             f2.revalidate();
             f2.repaint();
-            GenerateRouteCities c = new GenerateRouteCities(new CustomerAddress("De Wijk", "oosterakker 21"));
-            c.getOrderCities();
         }
     }
 }

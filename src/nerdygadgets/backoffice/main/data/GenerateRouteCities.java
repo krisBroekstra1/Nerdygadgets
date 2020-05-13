@@ -38,7 +38,8 @@ public class GenerateRouteCities {
             for(CustomerAddress s: allCities){
                 Coördinates c = gps.generate(s.getCity() + " " + s.getAddress());
                 double distance = gps.calculateDistance(coordinates, c);
-                if(distance <= 50.00){
+                System.out.println(distance);
+                if(distance <= 500.00){
                     s.setCoördinaten(c);
                     selectedCities.add(s);
                     System.out.println(s.getCity());

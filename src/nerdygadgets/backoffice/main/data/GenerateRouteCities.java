@@ -34,12 +34,12 @@ public class GenerateRouteCities {
 
     public void getOrderCities(){
         getAllCities();
-        selectedCities.add(this.customeraddress);
+        System.out.println(customeraddress.getOrderid());
         try{
             for(CustomerAddress s: allCities){
                 Coördinates c = gps.generate(s.getCity() + " " + s.getAddress());
                 double distance = gps.calculateDistance(coordinates, c);
-                System.out.println(distance);
+                System.out.println(s.getOrderid());
                 if(distance <= straal){
                     s.setCoördinaten(c);
                     selectedCities.add(s);

@@ -6,9 +6,10 @@ import nerdygadgets.backoffice.main.data.GenerateRouteCities;
 import nerdygadgets.backoffice.main.data.LoginData;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         LoginData d = LoginData.getInstance();
         if (d.isloggedin) {
             Frame f = new Frame(1000, 1000);

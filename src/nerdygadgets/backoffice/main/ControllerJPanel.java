@@ -5,9 +5,10 @@ import nerdygadgets.backoffice.main.Route.Route;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class ControllerJPanel extends JPanel {
-    public ControllerJPanel() throws IOException {
+    public ControllerJPanel() throws IOException, SQLException {
         JTabbedPane pane = new JTabbedPane();
 
         pane.addTab("Voorraad", new StockPanel());

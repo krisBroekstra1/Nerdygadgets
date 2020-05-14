@@ -18,6 +18,7 @@ public class GenerateRouteCities {
     private double lon;
     GPSCoördinaten gps;
     Coördinates coordinates;
+    private double straal = 500;
 
     public GenerateRouteCities(CustomerAddress ca){
         try{
@@ -39,7 +40,7 @@ public class GenerateRouteCities {
                 Coördinates c = gps.generate(s.getCity() + " " + s.getAddress());
                 double distance = gps.calculateDistance(coordinates, c);
                 System.out.println(distance);
-                if(distance <= 500.00){
+                if(distance <= straal){
                     s.setCoördinaten(c);
                     selectedCities.add(s);
                     System.out.println(s.getCity());
@@ -69,5 +70,9 @@ public class GenerateRouteCities {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setStraal(double straal) {
+        this.straal = straal;
     }
 }

@@ -1,5 +1,6 @@
 package nerdygadgets.backoffice.main.Route;
 
+import nerdygadgets.backoffice.main.JDBC.Driver;
 import nerdygadgets.backoffice.main.data.CustomerAddress;
 import nerdygadgets.backoffice.main.data.GenerateRouteCities;
 
@@ -9,43 +10,84 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NeigerstNeighbour extends JPanel implements ActionListener {
-    private GenerateRouteCities rc = new GenerateRouteCities(new CustomerAddress("Heeten", "Stokvisweg 14"));
+    private GenerateRouteCities rc;
     private ArrayList<CustomerAddress> AlgoArray;
     private static int distance = 0;
+    private JComboBox<String> citiess;
+    private DefaultTableModel model;
+    private JComboBox straal;
+    private JLabel straalLabel;
+    private String stringVoorGenerateRouteCities;
+    private HashMap<String, String> hm = new HashMap<>();
+    JTable jtable;
+    JLabel adressenVoor;
 
-    public NeigerstNeighbour() {
+    public NeigerstNeighbour() throws SQLException {
         setLayout(new FlowLayout());
         setSize(300, 300);
         setVisible(true);
         AlgoArray = new ArrayList<>();
-        JButton test = new JButton("test path");
+        JButton test = new JButton("Genereer route!");
+        makeJcombobox();
+        adressenVoor = new JLabel("Kies voorkeurslocatie");
+        straalLabel = new JLabel("kies gewenste straal");
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                rc = new GenerateRouteCities(new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities)));
                 rc.getOrderCities();
                 AlgoArray = rc.getSelectedCities();
                 System.out.println("Before algorithm:");
-                for (CustomerAddress c:AlgoArray
-                     ) {
-                    System.out.println(c.getCity()+ " - "+  c.getAddress());
+                for (CustomerAddress c : AlgoArray
+                ) {
+                    System.out.println(c.getCity() + " - " + c.getAddress());
                 }
                 ArrayList<CustomerAddress> result = findPath2(AlgoArray);
                 System.out.println("After algorithm:");
-                System.out.println("Distance: "+ distance+ " km");
-                for (CustomerAddress c:result
-                     ) {
-                    System.out.println(c.getCity()+ " - "+  c.getAddress());
+                System.out.println("Distance: " + distance + " km");
+                for (CustomerAddress c : result
+                ) {
+                    System.out.println(c.getCity() + " - " + c.getAddress());
                 }
             }
         });
         add(test);
+        model = new DefaultTableModel();
+        model.addColumn("OrderID");
+        model.addColumn("Stad");
+        model.addColumn("Adres");
+        model.addRow(new Object[]{"OrderID", "Stad", "Adres"});
+        jtable = new JTable(model);
+        add(adressenVoor);
+        add(straalLabel);
+        add(jtable);
     }
 
+    public void makeJcombobox() throws SQLException {
+        ArrayList<String> cities = new ArrayList<>();
+        ResultSet result = Driver.getCustomers();
+        while (result.next()) {
+            String city = result.getString("City");
+            String adres = result.getString("Adres");
+            hm.put(city,adres);
+            cities.add(city);
+        }
+        citiess = new JComboBox(cities.toArray());
+        add(new JLabel("Kies voorkeurslocatie"));
+        citiess.addActionListener(this);
+        add(citiess);
+        add(new JLabel("Kies gebied (km)"));
+        straal = new JComboBox<>(new String[]{"25km", "50km", "100km"});
+        straal.addActionListener(this);
+        add(straal);
+    }
 
     public double calculateDistance(Coördinates c1, Coördinates c2) {
         if (c1 == null || c2 == null) {
@@ -65,12 +107,12 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     }
 
     public CustomerAddress getShortestNode2(ArrayList<CustomerAddress> ar, CustomerAddress start) {
-        CustomerAddress shortestNode = new CustomerAddress(null,null);
+        CustomerAddress shortestNode = new CustomerAddress(null, null);
         Double shortestDistance = Double.MAX_VALUE;
         for (CustomerAddress c : ar) {
             if (!(c.getCoördinaten().equals(start.getCoördinaten()))) {
-                double dis = calculateDistance(c.getCoördinaten(),start.getCoördinaten());
-                if(dis < shortestDistance){
+                double dis = calculateDistance(c.getCoördinaten(), start.getCoördinaten());
+                if (dis < shortestDistance) {
                     shortestDistance = dis;
                     shortestNode = c;
                 }
@@ -79,10 +121,11 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         distance += shortestDistance;
         return shortestNode;
     }
-    public ArrayList<CustomerAddress> findPath2(ArrayList<CustomerAddress> arl){
+
+    public ArrayList<CustomerAddress> findPath2(ArrayList<CustomerAddress> arl) {
         ArrayList<CustomerAddress> returnvalue = new ArrayList<>();
         CustomerAddress start = new CustomerAddress("Zwolle", "Windesheim");
-        start.setCoördinaten(new Coördinates(6.0830219,52.5167747));
+        start.setCoördinaten(new Coördinates(6.0830219, 52.5167747));
         returnvalue.add(start);
 
         ArrayList<CustomerAddress> buffer = arl;
@@ -92,49 +135,61 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         int size = buffer.size();
         System.out.println(size);
         for (int i = 0; i < size; i++) {
-            currentPath = getShortestNode2(buffer,previous);
+            currentPath = getShortestNode2(buffer, previous);
             returnvalue.add(currentPath);
             buffer.remove(previous);
             previous = currentPath;
         }
         return returnvalue;
     }
+    public void updateModel(){
+        if((!(straalLabel.getText().equals("kies gewenste straal")))&&!(adressenVoor.getText().equals("Kies voorkeurslocatie"))){
 
-
-    public String getPath(HashMap<String, Coördinates> hm) throws IOException {
-        String path = "Zwolle";
-        String previous = "Zwolle";
-        String currentPath = "Zwolle";
-        int size = hm.size() - 1;
-        for (int i = 0; i < size; i++) {
-            System.out.println(hm.get("Zwolle"));
-            currentPath = getShortestNode(hm, previous);
-            path += "->";
-            path = path + currentPath;
-            hm.remove(previous);
-            previous = currentPath;
         }
-        System.out.println(path);
-        return path;
-    }
-    public String getShortestNode(HashMap<String, Coördinates> hm, String start) {
-        String startNode = start;
-        String shortestNode = "Zwolle";
-        Double shortestDistance = Double.MAX_VALUE;
-        for (Map.Entry<String, Coördinates> all : hm.entrySet()) {
-            if (!(all.getKey().equals(startNode))) {
-                double dis = calculateDistance(hm.get(startNode), all.getValue());
-                if (dis < shortestDistance) {
-                    shortestDistance = dis;
-                    shortestNode = all.getKey();
-                }
-            }
-        }
-        return shortestNode;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == citiess) {
 
+            JComboBox comboBox = (JComboBox) e.getSource();
+
+            // Print the selected items and the action command.
+            Object selected = comboBox.getSelectedItem();
+            System.out.println("Selected Item  = " + selected);
+            String command = e.getActionCommand();
+            System.out.println("Action Command = " + command);
+
+            // Detect whether the action command is "comboBoxEdited"
+            // or "comboBoxChanged"
+            if ("comboBoxChanged".equals(command)) {
+                System.out.println("User has typed a string in " +
+                        "the combo box.");
+                adressenVoor.setText(selected + ": ");
+                stringVoorGenerateRouteCities = selected.toString();
+                revalidate();
+                repaint();
+            }
+        }
+        if (e.getSource() == straal) {
+            JComboBox comboBox1 = (JComboBox) e.getSource();
+
+            // Print the selected items and the action command.
+            Object selected = comboBox1.getSelectedItem();
+            System.out.println("Selected Item  = " + selected);
+            String command = e.getActionCommand();
+            System.out.println("Action Command = " + command);
+
+            // Detect whether the action command is "comboBoxEdited"
+            // or "comboBoxChanged"
+            if ("comboBoxChanged".equals(command)) {
+                System.out.println("User has typed a string in " +
+                        "the combo box.");
+                straalLabel.setText("(" + selected + ")");
+                revalidate();
+                repaint();
+            }
+        }
     }
+
 }

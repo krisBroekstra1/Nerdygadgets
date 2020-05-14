@@ -41,7 +41,8 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                rc = new GenerateRouteCities(new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities)));
+                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities));
+                rc = new GenerateRouteCities(c1);
                 rc.getOrderCities();
                 AlgoArray = rc.getSelectedCities();
                 System.out.println("Before algorithm:");
@@ -72,7 +73,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
 
     public void makeJcombobox() throws SQLException {
         ArrayList<String> cities = new ArrayList<>();
-        ResultSet result = Driver.getCustomers();
+        ResultSet result = Driver.getOrderCities();
         while (result.next()) {
             String city = result.getString("City");
             String adres = result.getString("Adres");

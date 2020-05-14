@@ -19,12 +19,13 @@ import java.util.Map;
 public class NeigerstNeighbour extends JPanel implements ActionListener {
     private GenerateRouteCities rc;
     private ArrayList<CustomerAddress> AlgoArray;
-    private static int distance = 0;
+    private static double distance = 0;
     private JComboBox<String> citiess;
     private DefaultTableModel model;
     private JComboBox straal;
     private JLabel straalLabel;
     private String stringVoorGenerateRouteCities;
+    private double straalVoorGenerateRouteCities;
     private HashMap<String, String> hm = new HashMap<>();
     JTable jtable;
     JLabel adressenVoor;
@@ -43,6 +44,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities));
                 rc = new GenerateRouteCities(c1);
+                rc.setStraal(straalVoorGenerateRouteCities);
                 rc.getOrderCities();
                 AlgoArray = rc.getSelectedCities();
                 System.out.println("Before algorithm:");
@@ -52,11 +54,13 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
                 ArrayList<CustomerAddress> result = findPath2(AlgoArray);
                 System.out.println("After algorithm:");
+                System.out.println("Straal: " + straalVoorGenerateRouteCities);
                 System.out.println("Distance: " + distance + " km");
                 for (CustomerAddress c : result
                 ) {
                     System.out.println(c.getCity() + " - " + c.getAddress());
                 }
+                distance = 0;
             }
         });
         add(test);
@@ -85,7 +89,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         citiess.addActionListener(this);
         add(citiess);
         add(new JLabel("Kies gebied (km)"));
-        straal = new JComboBox<>(new String[]{"25km", "50km", "100km"});
+        straal = new JComboBox<>(new String[]{"25", "50", "100"});
         straal.addActionListener(this);
         add(straal);
     }
@@ -119,6 +123,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
             }
         }
+
         distance += shortestDistance;
         return shortestNode;
     }
@@ -186,6 +191,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             if ("comboBoxChanged".equals(command)) {
                 System.out.println("User has typed a string in " +
                         "the combo box.");
+                straalVoorGenerateRouteCities = Double.parseDouble(selected.toString());
                 straalLabel.setText("(" + selected + ")");
                 revalidate();
                 repaint();

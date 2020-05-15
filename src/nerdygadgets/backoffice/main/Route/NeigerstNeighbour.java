@@ -48,6 +48,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 rc.getOrderCities();
                 AlgoArray = rc.getSelectedCities();
                 System.out.println("Before algorithm:");
+                model.setRowCount(1);
                 for (CustomerAddress c : AlgoArray
                 ) {
                     System.out.println(c.getCity() + " - " + c.getAddress());
@@ -59,6 +60,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 for (CustomerAddress c : result
                 ) {
                     System.out.println(c.getCity() + " - " + c.getAddress());
+                    model.addRow(new Object[] {"OrderID", c.getCity(),c.getAddress()});
                 }
                 distance = 0;
             }
@@ -68,7 +70,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         model.addColumn("OrderID");
         model.addColumn("Stad");
         model.addColumn("Adres");
-        model.addRow(new Object[]{"OrderID", "Stad", "Adres"});
+        model.addRow(new Object[]{"OrderID","Stad", "Adres"});
         jtable = new JTable(model);
         add(adressenVoor);
         add(straalLabel);
@@ -192,7 +194,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 System.out.println("User has typed a string in " +
                         "the combo box.");
                 straalVoorGenerateRouteCities = Double.parseDouble(selected.toString());
-                straalLabel.setText("(" + selected + ")");
+                straalLabel.setText("(" + selected + ") km");
                 revalidate();
                 repaint();
             }

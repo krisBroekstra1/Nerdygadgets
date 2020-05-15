@@ -24,7 +24,7 @@ public class GenerateRouteCities {
         try{
             this.customeraddress = ca;
             gps = new GPSCoördinaten();
-            coordinates = gps.generate(customeraddress.getCity() + " " + customeraddress.getAddress());
+            coordinates = gps.generate(customeraddress.getAddress()+ " " + customeraddress.getPostalcode());
             this.customeraddress.setCoördinaten(coordinates);
         }catch(Exception ex){
             ex.printStackTrace();

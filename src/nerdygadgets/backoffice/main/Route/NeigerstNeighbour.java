@@ -109,6 +109,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         model.addColumn("Adres");
         model.addRow(new Object[]{"OrderID","Stad", "Adres"});
         jtable = new JTable(model);
+        jtable.getColumnModel().getColumn(2).setPreferredWidth(200);
         c.gridy = 6;
         add(adressenVoor,c);
         c.gridy = 7;

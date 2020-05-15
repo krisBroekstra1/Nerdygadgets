@@ -29,19 +29,19 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     private HashMap<String, String> hm = new HashMap<>();
     JTable jtable;
     JLabel adressenVoor;
+    JLabel aantalKilometers;
 
     public NeigerstNeighbour() throws SQLException {
-        setLayout(new FlowLayout());
-        setSize(300, 300);
-        setVisible(true);
+        setLayout(new GridBagLayout());
         AlgoArray = new ArrayList<>();
         JButton test = new JButton("Genereer route!");
-        makeJcombobox();
         adressenVoor = new JLabel("Kies voorkeurslocatie");
         straalLabel = new JLabel("kies gewenste straal");
+        aantalKilometers = new JLabel("Totaal aantal Kilometers: "+ 0);
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                distance = 0;
                 CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities));
                 rc = new GenerateRouteCities(c1);
                 rc.setStraal(straalVoorGenerateRouteCities);
@@ -57,27 +57,86 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 System.out.println("After algorithm:");
                 System.out.println("Straal: " + straalVoorGenerateRouteCities);
                 System.out.println("Distance: " + distance + " km");
+                aantalKilometers.setText("Totaal aantal Kilometers: "+ distance + "km");
                 for (CustomerAddress c : result
                 ) {
                     System.out.println(c.getCity() + " - " + c.getAddress());
                     model.addRow(new Object[] {"OrderID", c.getCity(),c.getAddress()});
                 }
-                distance = 0;
+                revalidate();
+                repaint();
             }
         });
-        add(test);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.WEST;
+        c.weightx = 1;
+        add(new JLabel("Kies voorkeurslocatie en straal"), c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        add(new JSeparator(), c);
+        c.gridy = 2;
+        makeJcombobox(c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        add(new JPanel(), c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        add(new JSeparator(), c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 4;
+        c.anchor = GridBagConstraints.WEST;
+        add(new JLabel("Route"), c);
+        c.gridy = 5;
+        add(test,c);
         model = new DefaultTableModel();
         model.addColumn("OrderID");
         model.addColumn("Stad");
         model.addColumn("Adres");
         model.addRow(new Object[]{"OrderID","Stad", "Adres"});
         jtable = new JTable(model);
-        add(adressenVoor);
-        add(straalLabel);
-        add(jtable);
+        c.gridy = 6;
+        add(adressenVoor,c);
+        c.gridy = 7;
+        add(straalLabel,c);
+        c.gridy = 8;
+        add(aantalKilometers,c);
+        c.gridy = 9;
+        add(jtable,c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 10;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        add(new JSeparator(), c);
+
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 11;
+        c.weighty = 1;
+        add(new JPanel(), c);
+
+        setSize(300, 300);
+        setVisible(true);
+
+
     }
 
-    public void makeJcombobox() throws SQLException {
+    public void makeJcombobox(GridBagConstraints c) throws SQLException {
         ArrayList<String> cities = new ArrayList<>();
         ResultSet result = Driver.getOrderCities();
         while (result.next()) {
@@ -87,13 +146,13 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             cities.add(city);
         }
         citiess = new JComboBox(cities.toArray());
-        add(new JLabel("Kies voorkeurslocatie"));
         citiess.addActionListener(this);
-        add(citiess);
-        add(new JLabel("Kies gebied (km)"));
+        add(citiess,c);
+        add(new JLabel("Kies gebied (km)"),c);
         straal = new JComboBox<>(new String[]{"25", "50", "100"});
         straal.addActionListener(this);
-        add(straal);
+        c.gridx += 1;
+        add(straal,c);
     }
 
     public double calculateDistance(Coördinates c1, Coördinates c2) {

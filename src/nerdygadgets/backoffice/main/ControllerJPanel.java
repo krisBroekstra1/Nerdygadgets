@@ -16,7 +16,7 @@ public class ControllerJPanel extends JPanel {
         pane.addTab("Orders", new orderPanel());
         pane.addTab("Gps", new Gpscoördinate());
         pane.addTab("Algoritme_V1", new Route());
-        pane.addTab("NeigerstNeighbour", new NeigerstNeighbour());
+        pane.addTab("NearestNeighbour", new NeigerstNeighbour());
         add(pane);
     }
 }

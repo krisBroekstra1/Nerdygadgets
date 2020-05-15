@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.math.*;
 
 public class NeigerstNeighbour extends JPanel implements ActionListener {
     private GenerateRouteCities rc;
@@ -57,6 +58,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 System.out.println("After algorithm:");
                 System.out.println("Straal: " + straalVoorGenerateRouteCities);
                 System.out.println("Distance: " + distance + " km");
+                distance = Math.round(distance);
                 aantalKilometers.setText("Totaal aantal Kilometers: "+ distance + "km");
                 for (CustomerAddress c : result
                 ) {

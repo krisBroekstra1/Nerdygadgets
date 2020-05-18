@@ -1,5 +1,6 @@
 package nerdygadgets.backoffice.main;
 
+import com.mysql.cj.protocol.Message;
 import nerdygadgets.backoffice.main.JDBC.Driver;
 import net.miginfocom.swing.MigLayout;
 
@@ -56,6 +57,7 @@ public class StockPanel extends JPanel implements ActionListener {
                 String itemname = _table.getModel().getValueAt(row, 1).toString(); //StockItemName
                 String Quantity = _table.getModel().getValueAt(row, 2).toString(); //QuantityOnHand
                 Driver.UpdateVoorraad(id, itemname, Quantity);
+                JOptionPane.showMessageDialog(null, itemname + " is succesvol bewerkt", "bewerken voltooid", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 //        table.setBackground(new Color(255,255,255));

@@ -4,6 +4,7 @@ import nerdygadgets.backoffice.main.Route.Route;
 import nerdygadgets.backoffice.main.data.CustomerAddress;
 import nerdygadgets.backoffice.main.data.GenerateRouteCities;
 import nerdygadgets.backoffice.main.data.LoginData;
+import net.miginfocom.swing.MigLayout;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,7 +20,8 @@ public class Main {
         } else {
             Frame f2 = new Frame(350, 350);
             f2.setTitle("Backoffice - Login");
-            f2.add(new LoginContent(f2));
+            f2.setLayout(new MigLayout("", "[center, grow]"));
+            f2.add(new LoginContent(f2), "wrap");
             f2.revalidate();
             f2.repaint();
         }

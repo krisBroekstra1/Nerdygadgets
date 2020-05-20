@@ -28,6 +28,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     private String stringVoorGenerateRouteCities;
     private double straalVoorGenerateRouteCities;
     private HashMap<String, String> hm = new HashMap<>();
+    private String province;
     JTable jtable;
     JLabel adressenVoor;
     JLabel aantalKilometers;
@@ -43,9 +44,8 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 distance = 0;
-                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities));
+                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities), stringVoorGenerateRouteCities);
                 rc = new GenerateRouteCities(c1);
-                rc.setStraal(straalVoorGenerateRouteCities);
                 rc.getOrderCities();
                 AlgoArray = rc.getSelectedCities();
                 System.out.println("Before algorithm:");
@@ -56,7 +56,6 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
                 ArrayList<CustomerAddress> result = findPath2(AlgoArray);
                 System.out.println("After algorithm:");
-                System.out.println("Straal: " + straalVoorGenerateRouteCities);
                 System.out.println("Distance: " + distance + " km");
                 distance = Math.round(distance);
                 aantalKilometers.setText("Totaal aantal Kilometers: "+ distance + "km");
@@ -145,17 +144,13 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         while (result.next()) {
             String city = result.getString("City");
             String adres = result.getString("Adres");
+            province = result.getString("province");
             hm.put(city,adres);
-            cities.add(city);
+            cities.add(province);
         }
         citiess = new JComboBox(cities.toArray());
         citiess.addActionListener(this);
         add(citiess,c);
-        add(new JLabel("Kies gebied (km)"),c);
-        straal = new JComboBox<>(new String[]{"25", "50", "100"});
-        straal.addActionListener(this);
-        c.gridx += 1;
-        add(straal,c);
     }
 
     public double calculateDistance(Coördinates c1, Coördinates c2) {
@@ -176,7 +171,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     }
 
     public CustomerAddress getShortestNode2(ArrayList<CustomerAddress> ar, CustomerAddress start) {
-        CustomerAddress shortestNode = new CustomerAddress(null, null);
+        CustomerAddress shortestNode = new CustomerAddress(null, null, null);
         Double shortestDistance = Double.MAX_VALUE;
         for (CustomerAddress c : ar) {
             if (!(c.getCoördinaten().equals(start.getCoördinaten()))) {
@@ -194,7 +189,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
 
     public ArrayList<CustomerAddress> findPath2(ArrayList<CustomerAddress> arl) {
         ArrayList<CustomerAddress> returnvalue = new ArrayList<>();
-        CustomerAddress start = new CustomerAddress("Zwolle", "Windesheim");
+        CustomerAddress start = new CustomerAddress("Zwolle", "Windesheim", "Overijssel");
         start.setCoördinaten(new Coördinates(6.0830219, 52.5167747));
         returnvalue.add(start);
 

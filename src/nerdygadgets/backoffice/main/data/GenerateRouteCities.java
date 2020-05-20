@@ -24,6 +24,8 @@ public class GenerateRouteCities {
         try{
             this.customeraddress = ca;
             gps = new GPSCoördinaten();
+            System.out.println(customeraddress.getPostalcode());
+            System.out.println(customeraddress.getAddress());
             coordinates = gps.generate(customeraddress.getAddress()+ " " + customeraddress.getPostalcode());
             this.customeraddress.setCoördinaten(coordinates);
         }catch(Exception ex){
@@ -33,19 +35,9 @@ public class GenerateRouteCities {
     }
 
     public void getOrderCities(){
-        getAllCities();
-        System.out.println(customeraddress.getOrderid());
         try{
-            for(CustomerAddress s: allCities){
-                Coördinates c = gps.generate(s.getCity() + " " + s.getAddress());
-                double distance = gps.calculateDistance(coordinates, c);
-                System.out.println(s.getOrderid());
-                if(distance <= straal){
-                    s.setCoördinaten(c);
-                    selectedCities.add(s);
-                    System.out.println(s.getCity());
-                }
-            }
+            getAllCities(customeraddress.getProvince());
+            System.out.println(customeraddress.getProvince());
             System.out.println(selectedCities);
         } catch(Exception ex){
             ex.printStackTrace();
@@ -56,15 +48,18 @@ public class GenerateRouteCities {
         return selectedCities;
     }
 
-    private void getAllCities(){
-        ResultSet result = Driver.getOrderCities();
+    private void getAllCities(String province){
+        System.out.println(province);
+        ResultSet result = Driver.getOrderCities(province);
         try {
             while (result.next()) {
-                CustomerAddress ca = new CustomerAddress(result.getString("City"), result.getString("adres"));
+                CustomerAddress ca = new CustomerAddress(result.getString("City"), result.getString("adres"), result.getString("province"));
                 ca.setName(result.getString("CustomerName"));
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
-                allCities.add(ca);
+                ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
+
+                selectedCities.add(ca);
             }
         }
         catch (Exception e) {

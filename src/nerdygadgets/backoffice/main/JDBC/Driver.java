@@ -161,8 +161,22 @@ public class Driver {
     public static ResultSet getOrderCities(){
         try{
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
-            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED'";
+            String query = "SELECT DISTINCT OrderID, CustomerName, City, Adres, Postalcode, province FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' GROUP BY province";
             PreparedStatement preparedstmt = myConn.prepareStatement(query);
+            ResultSet result = preparedstmt.executeQuery();
+            return result;
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ResultSet getOrderCities(String province){
+        try{
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode, province FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' AND province = ?";
+            PreparedStatement preparedstmt = myConn.prepareStatement(query);
+            preparedstmt.setString(1, province);
             ResultSet result = preparedstmt.executeQuery();
             return result;
         } catch(Exception ex){

@@ -171,4 +171,33 @@ public class Driver {
         return null;
     }
 
+    public static ResultSet getOrders(String stad,String adress){
+        try{
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            String query = "SELECT OrderID, CustomerName, OrderDate FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' AND city = ? AND adres = ?";
+            PreparedStatement preparedStatement = myConn.prepareStatement(query);
+            preparedStatement.setString(1,stad);
+            preparedStatement.setString(2,adress);
+
+            ResultSet result = preparedStatement.executeQuery();
+            return result;
+        } catch (Exception exe){
+            exe.printStackTrace();
+        }
+        return null;
+    }
+    public static ResultSet getProduct(String orderID){
+        try{
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            String query = "SELECT StockItemName FROM stockitems AS s JOIN orderlines AS ol ON s.StockItemID = ol.StockItemID WHERE ol.OrderID = ?";
+            PreparedStatement preparedStatement = myConn.prepareStatement(query);
+            preparedStatement.setString(1,orderID);
+            ResultSet result = preparedStatement.executeQuery();
+            return result;
+        }catch (Exception exep){
+            exep.printStackTrace();
+        }
+        return null;
+    }
+
 }

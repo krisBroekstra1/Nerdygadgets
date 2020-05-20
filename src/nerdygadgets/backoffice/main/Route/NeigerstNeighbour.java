@@ -1,10 +1,15 @@
 package nerdygadgets.backoffice.main.Route;
 
+import com.sun.source.tree.WhileLoopTree;
 import nerdygadgets.backoffice.main.JDBC.Driver;
 import nerdygadgets.backoffice.main.data.CustomerAddress;
 import nerdygadgets.backoffice.main.data.GenerateRouteCities;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,14 +28,21 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     private static double distance = 0;
     private JComboBox<String> citiess;
     private DefaultTableModel model;
+    private DefaultTableModel model2;
+    private DefaultTableModel model3;
     private JComboBox straal;
     private JLabel straalLabel;
     private String stringVoorGenerateRouteCities;
     private double straalVoorGenerateRouteCities;
     private HashMap<String, String> hm = new HashMap<>();
-    JTable jtable;
-    JLabel adressenVoor;
-    JLabel aantalKilometers;
+    private JTable jtable;
+    private JLabel adressenVoor;
+    private JLabel aantalKilometers;
+    private ArrayList<CustomerAddress> newroute = new ArrayList<>();
+    private ArrayList<CustomerAddress> route = new ArrayList<>();
+    private String geselecteerdeRowStad;
+    private String geselecteerdeRowAdres;
+    private String geselecteerdeRowCustomer;
 
     public NeigerstNeighbour() throws SQLException {
         setLayout(new GridBagLayout());
@@ -38,38 +50,51 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         JButton test = new JButton("Genereer route!");
         adressenVoor = new JLabel("Kies voorkeurslocatie");
         straalLabel = new JLabel("kies gewenste straal");
-        aantalKilometers = new JLabel("Totaal aantal Kilometers: "+ 0);
+        aantalKilometers = new JLabel("Totaal aantal Kilometers: " + 0);
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                distance = 0;
-                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities));
+                //Hier wordt de start van routecities (met voorkeurslociatie)
+                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities, hm.get(stringVoorGenerateRouteCities));
                 rc = new GenerateRouteCities(c1);
                 rc.setStraal(straalVoorGenerateRouteCities);
                 rc.getOrderCities();
+                //de array van alle plaatsen die binnen de straal vallen
                 AlgoArray = rc.getSelectedCities();
+                route = AlgoArray;
+                //Print alle waarden die voor het algoritme aan de arraylist zijn toegevoegd
                 System.out.println("Before algorithm:");
+                //resset van model dat in jpanel staat
                 model.setRowCount(1);
-                for (CustomerAddress c : AlgoArray
+                for (CustomerAddress c : route
                 ) {
                     System.out.println(c.getCity() + " - " + c.getAddress());
                 }
-                ArrayList<CustomerAddress> result = findPath2(AlgoArray);
+                //twoOpt uitvoeren op route geeft als object een arraylist terug.
+                //aantal meegeven -> hoe hoger hoe vaker er wordt geprobeerd om een betere route te vinden
+                route = twoOpt(AlgoArray, 100, true);
+                //aanpassen jlabel voor jpanel
+                aantalKilometers.setText("Totaal aantal Kilometers: " + getAfstand(route) + "km");
+                //output in cosole voor bugfixing
                 System.out.println("After algorithm:");
                 System.out.println("Straal: " + straalVoorGenerateRouteCities);
-                System.out.println("Distance: " + distance + " km");
-                distance = Math.round(distance);
-                aantalKilometers.setText("Totaal aantal Kilometers: "+ distance + "km");
-                for (CustomerAddress c : result
+                System.out.println("Afstand" + getAfstand(route));
+                System.out.println("Zwolle - Windesheim");
+                String name = "";
+                for (CustomerAddress c : route
                 ) {
-                    System.out.println(c.getCity() + " - " + c.getAddress());
-                    model.addRow(new Object[] {"OrderID", c.getCity(),c.getAddress()});
+                    if (!(name.equals(c.getName()))) {
+                        name = c.getName();
+                        model.addRow(new Object[]{name, c.getCity(), c.getAddress()});
+                        System.out.println(c.getCity() + " - "+ c.getAddress());
+                    }
                 }
                 revalidate();
                 repaint();
             }
         });
 
+        //Opmaak van de Jpanel
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -104,60 +129,131 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         c.anchor = GridBagConstraints.WEST;
         add(new JLabel("Route"), c);
         c.gridy = 5;
-        add(test,c);
+        add(test, c);
         model = new DefaultTableModel();
-        model.addColumn("OrderID");
+        model.addColumn("Customer");
         model.addColumn("Stad");
         model.addColumn("Adres");
-        model.addRow(new Object[]{"OrderID","Stad", "Adres"});
+        model.addRow(new Object[]{"Customer", "Stad", "Adres"});
         jtable = new JTable(model);
+        JTable jTable2 = new JTable(maakOrderTable(geselecteerdeRowStad, geselecteerdeRowAdres));
+        JLabel ordertekst = new JLabel("De orders voor gekozen persoon:");
         jtable.getColumnModel().getColumn(2).setPreferredWidth(200);
+        jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (jtable.getSelectedRow() > -1) {
+                    geselecteerdeRowCustomer = (jtable.getValueAt(jtable.getSelectedRow(), 0)).toString();
+                    geselecteerdeRowStad = (jtable.getValueAt(jtable.getSelectedRow(), 1)).toString();
+                    geselecteerdeRowAdres = (jtable.getValueAt(jtable.getSelectedRow(), 2)).toString();
+                    System.out.println(geselecteerdeRowStad);
+                    System.out.println(geselecteerdeRowAdres);
+                    try {
+                        jTable2.setModel(maakOrderTable(geselecteerdeRowStad, geselecteerdeRowAdres));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    ordertekst.setText("De orders voor: " + geselecteerdeRowCustomer);
+                }
+            }
+        });
+
         c.gridy = 6;
-        add(adressenVoor,c);
+        add(adressenVoor, c);
         c.gridy = 7;
-        add(straalLabel,c);
+        add(straalLabel, c);
         c.gridy = 8;
-        add(aantalKilometers,c);
+        add(aantalKilometers, c);
         c.gridy = 9;
-        add(jtable,c);
+        add(jtable, c);
+        c.gridy = 10;
+        add(ordertekst, c);
+        c.gridy = 11;
+
+        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if(jTable2.getSelectedRow() > -1){
+                    String orderId = jTable2.getValueAt(jTable2.getSelectedRow(),0).toString();
+                    JTable jTable3 = null;
+                    try {
+                        jTable3 = new JTable(maakproductTable(orderId));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                    JOptionPane.showMessageDialog(null,jTable3,"OrderID: " +orderId,JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        });
+        add(jTable2, c);
 
         c = new GridBagConstraints();
         c.gridx = 0;
-        c.gridy = 10;
+        c.gridy = 12;
         c.fill = GridBagConstraints.HORIZONTAL;
         add(new JSeparator(), c);
 
         c = new GridBagConstraints();
         c.gridx = 0;
-        c.gridy = 11;
+        c.gridy = 13;
         c.weighty = 1;
         add(new JPanel(), c);
 
-        setSize(300, 300);
+        setSize(300, 500);
         setVisible(true);
 
 
     }
+    public DefaultTableModel maakproductTable(String orderId) throws SQLException{
+        model3 = new DefaultTableModel();
+        model3.addColumn("Product");
+        model3.addRow(new Object[]{"Product"});
+        ResultSet result = Driver.getProduct(orderId);
+        while(result.next()){
+            model3.addRow(new Object[]{result.getString("StockItemName")});
+        }
+        return model3;
+    }
 
+    public DefaultTableModel maakOrderTable(String stad, String adres) throws SQLException {
+        model2 = new DefaultTableModel();
+        model2.addColumn("OrderID");
+        model2.addColumn("Klant");
+        model2.addColumn("Besteldatum");
+        model2.addRow(new Object[]{"OrderID", "Klant", "Besteldatum"});
+        ResultSet result = Driver.getOrders(stad, adres);
+        while (result.next()) {
+            String klant = result.getString("CustomerName");
+            String Orderid = result.getString("OrderID");
+            String bestelDatum = result.getString("OrderDate");
+            model2.addRow(new Object[]{Orderid, klant, bestelDatum});
+        }
+        return model2;
+
+    }
+
+    //Voorkeurslocatie en gewenste straal toevoegen
     public void makeJcombobox(GridBagConstraints c) throws SQLException {
         ArrayList<String> cities = new ArrayList<>();
         ResultSet result = Driver.getOrderCities();
         while (result.next()) {
             String city = result.getString("City");
             String adres = result.getString("Adres");
-            hm.put(city,adres);
+            hm.put(city, adres);
             cities.add(city);
         }
         citiess = new JComboBox(cities.toArray());
         citiess.addActionListener(this);
-        add(citiess,c);
-        add(new JLabel("Kies gebied (km)"),c);
+        add(citiess, c);
+        add(new JLabel("Kies gebied (km)"), c);
         straal = new JComboBox<>(new String[]{"25", "50", "100"});
         straal.addActionListener(this);
         c.gridx += 1;
-        add(straal,c);
+        add(straal, c);
     }
 
+    //de afstand bepalen tussen twee cooordinaten
     public double calculateDistance(Coördinates c1, Coördinates c2) {
         if (c1 == null || c2 == null) {
             System.out.println("Coordinaten zijn null, alles kapot!");
@@ -175,6 +271,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         return afstand;
     }
 
+    //Uit de arraylist de dichtsbijzijnste locatie kiezen
     public CustomerAddress getShortestNode2(ArrayList<CustomerAddress> ar, CustomerAddress start) {
         CustomerAddress shortestNode = new CustomerAddress(null, null);
         Double shortestDistance = Double.MAX_VALUE;
@@ -192,11 +289,26 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         return shortestNode;
     }
 
+    //De totale afstand van alle punten in een arraylist bepalen (met als beginpunt zwolle)
+    public double getAfstand(ArrayList<CustomerAddress> ar) {
+        int size = ar.size();
+        double dis;
+        double totaldis = 0;
+        totaldis += calculateDistance(ar.get(0).getCoördinaten(), new Coördinates(6.0830219, 52.5167747));
+        for (int i = 0; i < size - 1; i++) {
+            dis = calculateDistance(ar.get(i).getCoördinaten(), ar.get(i + 1).getCoördinaten());
+            totaldis += dis;
+        }
+        return totaldis;
+    }
+
+    // Nearest neighbour met als start de locatie zwolle
     public ArrayList<CustomerAddress> findPath2(ArrayList<CustomerAddress> arl) {
+        distance = 0;
         ArrayList<CustomerAddress> returnvalue = new ArrayList<>();
         CustomerAddress start = new CustomerAddress("Zwolle", "Windesheim");
         start.setCoördinaten(new Coördinates(6.0830219, 52.5167747));
-        returnvalue.add(start);
+        //returnvalue.add(start);
 
         ArrayList<CustomerAddress> buffer = arl;
         CustomerAddress previous = start;
@@ -212,8 +324,75 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         }
         return returnvalue;
     }
-    public void updateModel(){
-        if((!(straalLabel.getText().equals("kies gewenste straal")))&&!(adressenVoor.getText().equals("Kies voorkeurslocatie"))){
+
+    //een Two opt optimalisatie van nearest neighbour
+    public ArrayList<CustomerAddress> twoOpt(ArrayList<CustomerAddress> arl, int aantal, boolean twoOpt) {
+        ArrayList<CustomerAddress> returnvalue = new ArrayList<>();
+        //newroute leeghalen voor hergebruik van TwoOpt
+        newroute.clear();
+        if (twoOpt) {
+            //eerst een arraylist van nearestNeighbour
+            route = findPath2(arl);
+            int size = route.size();
+            //alle waarden van route toevoegen aan newroute
+            for (int l = 0; l < size; l++) {
+                newroute.add(l, route.get(l));
+            }
+            //als improve boven meegegeven aantal komt stopt de loop
+            int improve = 0;
+            int iteraties = 0;
+            while (improve < aantal) {
+                double distance0 = distance;
+                for (int i = 1; i < size - 1; i++) {
+                    for (int k = i + 1; k < size; k++) {
+                        //het verplaatsen van waardes in de newroute arraylist
+                        TwoOptSwap(i, k);
+                        iteraties++;
+                        distance0 = getAfstand(newroute);
+                        //de afstand met nearesNeighbour zonder twoOpt
+                        System.out.println(distance);
+                        //De afstand met nearestNeighbour met twoOpt
+                        System.out.println(distance0);
+                        System.out.println("Verbeter poging:" + improve);
+                        //Als er een betere afstand is gevonden wordt deze gebruikt.
+                        if (distance0 < distance) {
+                            System.out.println("Beter pad gevonden!");
+                            improve = 0;
+                            for (int j = 0; j < size; j++) {
+                                route.set(j, newroute.get(j));
+                            }
+                            distance = distance0;
+                        }
+                    }
+                }
+                improve++;
+            }
+        }
+        returnvalue = route;
+        return returnvalue;
+    }
+
+    public void TwoOptSwap(int i, int k) {
+        //Inteligent veranderen van volgorden in de arraylist om een te kijken voor een kortere route.
+        int size = route.size();
+        //take route[0] to route[i-1] and add them in order to new_route
+        for (int c = 0; c <= i - 1; c++) {
+            newroute.set(c, route.get(c));
+        }
+        //take route[i] to route[k] and add them in reverse order to new_route
+        int dec = 0;
+        for (int c = 0; c <= k; c++) {
+            newroute.set(c, route.get(k - dec));
+            dec++;
+        }
+        //take route[k+1] to end and add them in order to new_route
+        for (int c = k + 1; c < size; c++) {
+            newroute.set(c, route.get(c));
+        }
+    }
+
+    public void updateModel() {
+        if ((!(straalLabel.getText().equals("kies gewenste straal"))) && !(adressenVoor.getText().equals("Kies voorkeurslocatie"))) {
 
         }
     }

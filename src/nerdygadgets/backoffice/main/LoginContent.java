@@ -3,6 +3,7 @@ package nerdygadgets.backoffice.main;
 import com.mysql.cj.log.Log;
 import nerdygadgets.backoffice.main.JDBC.Driver;
 import nerdygadgets.backoffice.main.data.LoginData;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,22 +21,22 @@ public class LoginContent extends JPanel implements ActionListener {
 
     public LoginContent(Frame f){
         this.frame = f;
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new MigLayout("wrap 1", "[center][right][left][c]","[top][center][b]"));
         add(Box.createHorizontalGlue());
         name = new JLabel("Email:");
         username = new JTextField();
         username.setPreferredSize(new Dimension(100, 20));
-        add(name);
-        add(username);
+        add(name, "center");
+        add(username, "center");
 
         passwordL = new JLabel("Wachtwoord:");
         password = new JPasswordField();
         password.setPreferredSize(new Dimension(100, 20));
-        add(passwordL);
-        add(password);
+        add(passwordL, "center");
+        add(password, "center");
 
         login = new JButton("LOGIN");
-        add(login);
+        add(login, "center");
         login.addActionListener(this);
     }
 

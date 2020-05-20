@@ -1,6 +1,8 @@
 package nerdygadgets.backoffice.main;
 
+import com.mysql.cj.protocol.Message;
 import nerdygadgets.backoffice.main.JDBC.Driver;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -23,7 +25,7 @@ public class StockPanel extends JPanel implements ActionListener {
 
     public StockPanel(){
         ResultSet rs = Driver.getStock();
-
+        setLayout(new MigLayout("wrap", "[center, grow]"));
         label = new JLabel("Voorraad");
         try {
             _table = new JTable(buildTableModel(rs)){
@@ -55,10 +57,12 @@ public class StockPanel extends JPanel implements ActionListener {
                 String itemname = _table.getModel().getValueAt(row, 1).toString(); //StockItemName
                 String Quantity = _table.getModel().getValueAt(row, 2).toString(); //QuantityOnHand
                 Driver.UpdateVoorraad(id, itemname, Quantity);
+                JOptionPane.showMessageDialog(null, itemname + " is succesvol bewerkt", "bewerken voltooid", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 //        table.setBackground(new Color(255,255,255));
 
+        sp.setPreferredSize(new Dimension(900, 825));
         label.setFont(new Font("Serif", Font.PLAIN, 24));
 
         _btnBewerken.addActionListener(this);

@@ -43,6 +43,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     private String geselecteerdeRowStad;
     private String geselecteerdeRowAdres;
     private String geselecteerdeRowCustomer;
+    private String province;
 
     public NeigerstNeighbour() throws SQLException {
         setLayout(new GridBagLayout());
@@ -54,10 +55,10 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 //Hier wordt de start van routecities (met voorkeurslociatie)
-                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities, hm.get(stringVoorGenerateRouteCities));
+                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities), stringVoorGenerateRouteCities);
                 rc = new GenerateRouteCities(c1);
-                rc.setStraal(straalVoorGenerateRouteCities);
                 rc.getOrderCities();
                 //de array van alle plaatsen die binnen de straal vallen
                 AlgoArray = rc.getSelectedCities();
@@ -240,17 +241,14 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         while (result.next()) {
             String city = result.getString("City");
             String adres = result.getString("Adres");
-            hm.put(city, adres);
-            cities.add(city);
+
+            province = result.getString("province");
+            hm.put(city,adres);
+            cities.add(province);
         }
         citiess = new JComboBox(cities.toArray());
         citiess.addActionListener(this);
-        add(citiess, c);
-        add(new JLabel("Kies gebied (km)"), c);
-        straal = new JComboBox<>(new String[]{"25", "50", "100"});
-        straal.addActionListener(this);
-        c.gridx += 1;
-        add(straal, c);
+        add(citiess,c);
     }
 
     //de afstand bepalen tussen twee cooordinaten
@@ -273,7 +271,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
 
     //Uit de arraylist de dichtsbijzijnste locatie kiezen
     public CustomerAddress getShortestNode2(ArrayList<CustomerAddress> ar, CustomerAddress start) {
-        CustomerAddress shortestNode = new CustomerAddress(null, null);
+        CustomerAddress shortestNode = new CustomerAddress(null, null, null);
         Double shortestDistance = Double.MAX_VALUE;
         for (CustomerAddress c : ar) {
             if (!(c.getCoördinaten().equals(start.getCoördinaten()))) {
@@ -306,7 +304,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     public ArrayList<CustomerAddress> findPath2(ArrayList<CustomerAddress> arl) {
         distance = 0;
         ArrayList<CustomerAddress> returnvalue = new ArrayList<>();
-        CustomerAddress start = new CustomerAddress("Zwolle", "Windesheim");
+        CustomerAddress start = new CustomerAddress("Zwolle", "Windesheim", "Overijssel");
         start.setCoördinaten(new Coördinates(6.0830219, 52.5167747));
         //returnvalue.add(start);
 

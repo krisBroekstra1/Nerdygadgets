@@ -92,6 +92,7 @@ public class Driver {
             return null;
         }
     }
+
     public static ResultSet getStock() {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
@@ -103,6 +104,7 @@ public class Driver {
             return null;
         }
     }
+
     public static ResultSet getCustomers() {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
@@ -114,7 +116,8 @@ public class Driver {
             return null;
         }
     }
-    public static void UpdateCustomer(String id, String cust, String city, String adres, String post, String email, String tel){
+
+    public static void UpdateCustomer(String id, String cust, String city, String adres, String post, String email, String tel) {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             // create the java mysql update preparedstatement
@@ -131,12 +134,13 @@ public class Driver {
             // execute the java preparedstatement
             int rowsAffected = preparedStmt.executeUpdate();
 
-            System.out.println("Hoeveelheid rows veranderd: "+rowsAffected);
+            System.out.println("Hoeveelheid rows veranderd: " + rowsAffected);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static void UpdateVoorraad(String id, String itemname, String Quantity){ //Moet nog iets gebeuren als 1 niet werkt
+
+    public static void UpdateVoorraad(String id, String itemname, String Quantity) { //Moet nog iets gebeuren als 1 niet werkt
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             // create the java mysql update preparedstatement
@@ -151,51 +155,67 @@ public class Driver {
             preparedStmt2.setString(2, id);
             int rowsAffected2 = preparedStmt2.executeUpdate();
 
-            System.out.println("Hoeveelheid rows veranderd in tabel 1: "+rowsAffected1);
-            System.out.println("Hoeveelheid rows veranderd in tabel 2: "+rowsAffected2);
+            System.out.println("Hoeveelheid rows veranderd in tabel 1: " + rowsAffected1);
+            System.out.println("Hoeveelheid rows veranderd in tabel 2: " + rowsAffected2);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static ResultSet getOrderCities(){
-        try{
+    public static ResultSet getOrderCities() {
+        try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
-            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED'";
+            String query = "SELECT DISTINCT OrderID, CustomerName, City, Adres, Postalcode, province FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' GROUP BY province";
             PreparedStatement preparedstmt = myConn.prepareStatement(query);
             ResultSet result = preparedstmt.executeQuery();
             return result;
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
     }
 
-    public static ResultSet getOrders(String stad,String adress){
-        try{
+
+    public static ResultSet getOrders(String stad, String adress) {
+        try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             String query = "SELECT OrderID, CustomerName, OrderDate FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' AND city = ? AND adres = ?";
             PreparedStatement preparedStatement = myConn.prepareStatement(query);
-            preparedStatement.setString(1,stad);
-            preparedStatement.setString(2,adress);
+            preparedStatement.setString(1, stad);
+            preparedStatement.setString(2, adress);
 
             ResultSet result = preparedStatement.executeQuery();
             return result;
-        } catch (Exception exe){
+        } catch (Exception exe) {
             exe.printStackTrace();
         }
         return null;
     }
-    public static ResultSet getProduct(String orderID){
-        try{
+
+    public static ResultSet getProduct(String orderID) {
+        try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             String query = "SELECT StockItemName FROM stockitems AS s JOIN orderlines AS ol ON s.StockItemID = ol.StockItemID WHERE ol.OrderID = ?";
             PreparedStatement preparedStatement = myConn.prepareStatement(query);
-            preparedStatement.setString(1,orderID);
+            preparedStatement.setString(1, orderID);
             ResultSet result = preparedStatement.executeQuery();
             return result;
-        }catch (Exception exep){
+        } catch (Exception exep) {
             exep.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ResultSet getOrderCities(String province) {
+        try {
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode, province FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' AND province = ?";
+            PreparedStatement preparedstmt = myConn.prepareStatement(query);
+            preparedstmt.setString(1, province);
+            ResultSet result = preparedstmt.executeQuery();
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return null;
     }

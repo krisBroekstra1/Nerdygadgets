@@ -1,6 +1,7 @@
 package nerdygadgets.backoffice.main;
 
 import nerdygadgets.backoffice.main.JDBC.Driver;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -23,7 +24,7 @@ public class CustomerPanel extends JPanel implements ActionListener {
 
     public CustomerPanel(){
         ResultSet rs = Driver.getCustomers();
-
+        setLayout(new MigLayout("wrap", "[center, grow]"));
         label = new JLabel("Klanten");
         try {
             _table = new JTable(buildTableModel(rs)){
@@ -44,7 +45,7 @@ public class CustomerPanel extends JPanel implements ActionListener {
         JScrollPane sp = new JScrollPane(_table);
 
 
-        _table.setBounds(30, 40, 200, 200);
+        _table.setBounds(30, 40, 400, 200);
         _table.getTableHeader().setBackground(new Color(217, 43, 133));
         _table.setEnabled(false);
 
@@ -61,15 +62,18 @@ public class CustomerPanel extends JPanel implements ActionListener {
                 String email = _table.getModel().getValueAt(row, 5).toString(); //email
                 String tel = _table.getModel().getValueAt(row, 6).toString(); //telphonenumber
                 Driver.UpdateCustomer(id, cust, city, adres, post, email, tel);
+                JOptionPane.showMessageDialog(null, id + " is succesvol bewerkt", "bewerken voltooid", JOptionPane.INFORMATION_MESSAGE);
             }
         });
+
+        sp.setPreferredSize(new Dimension(900, 825));
 
         label.setFont(new Font("Serif", Font.PLAIN, 24));
 
         _btnBewerken.addActionListener(this);
 
         add(label);
-        add(sp);
+        add(sp, "align center");
         add(_btnBewerken);
     }
 

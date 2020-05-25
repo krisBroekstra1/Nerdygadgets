@@ -30,8 +30,6 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     private DefaultTableModel model;
     private DefaultTableModel model2;
     private DefaultTableModel model3;
-    private JComboBox straal;
-    private JLabel straalLabel;
     private String stringVoorGenerateRouteCities;
     private double straalVoorGenerateRouteCities;
     private HashMap<String, String> hm = new HashMap<>();
@@ -49,14 +47,13 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         setLayout(new GridBagLayout());
         AlgoArray = new ArrayList<>();
         JButton test = new JButton("Genereer route!");
-        adressenVoor = new JLabel("Kies voorkeurslocatie");
-        straalLabel = new JLabel("kies gewenste straal");
+        adressenVoor = new JLabel("Kies provincie");
         aantalKilometers = new JLabel("Totaal aantal Kilometers: " + 0);
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //Hier wordt de start van routecities (met voorkeurslociatie)
+                //Hier wordt de start van routecities (met provincie)
                 CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities), stringVoorGenerateRouteCities);
                 rc = new GenerateRouteCities(c1);
                 rc.getOrderCities();
@@ -101,7 +98,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         c.gridy = 0;
         c.anchor = GridBagConstraints.WEST;
         c.weightx = 1;
-        add(new JLabel("Kies voorkeurslocatie en straal"), c);
+        add(new JLabel("Kies provincie"), c);
 
         c = new GridBagConstraints();
         c.gridx = 0;
@@ -162,7 +159,6 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         c.gridy = 6;
         add(adressenVoor, c);
         c.gridy = 7;
-        add(straalLabel, c);
         c.gridy = 8;
         add(aantalKilometers, c);
         c.gridy = 9;
@@ -389,11 +385,6 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         }
     }
 
-    public void updateModel() {
-        if ((!(straalLabel.getText().equals("kies gewenste straal"))) && !(adressenVoor.getText().equals("Kies voorkeurslocatie"))) {
-
-        }
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -414,26 +405,6 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                         "the combo box.");
                 adressenVoor.setText(selected + ": ");
                 stringVoorGenerateRouteCities = selected.toString();
-                revalidate();
-                repaint();
-            }
-        }
-        if (e.getSource() == straal) {
-            JComboBox comboBox1 = (JComboBox) e.getSource();
-
-            // Print the selected items and the action command.
-            Object selected = comboBox1.getSelectedItem();
-            System.out.println("Selected Item  = " + selected);
-            String command = e.getActionCommand();
-            System.out.println("Action Command = " + command);
-
-            // Detect whether the action command is "comboBoxEdited"
-            // or "comboBoxChanged"
-            if ("comboBoxChanged".equals(command)) {
-                System.out.println("User has typed a string in " +
-                        "the combo box.");
-                straalVoorGenerateRouteCities = Double.parseDouble(selected.toString());
-                straalLabel.setText("(" + selected + ") km");
                 revalidate();
                 repaint();
             }

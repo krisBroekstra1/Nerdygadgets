@@ -66,19 +66,6 @@ public class Driver {
         }
     }
 
-    //Zo lees je de gegevens uit
-    /*ResultSet myRs = Driver.medewerkers();
-        try {
-        while (myRs.next()) {
-            System.out.println(myRs.getString("FullName"));
-            System.out.println(myRs.getString("EmailAddress"));
-            System.out.println(myRs.getString("PhoneNumber"));
-            System.out.println();
-        }
-    }
-        catch (Exception e) {
-        e.printStackTrace();
-    }*/
 
     //Functie Orders
     public static ResultSet orders() {

@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class ControllerJPanel extends JPanel {
+public class ControllerJPanel extends JPanel{
     public ControllerJPanel() throws IOException, SQLException {
         JTabbedPane pane = new JTabbedPane();
 

@@ -1,10 +1,8 @@
 package nerdygadgets.backoffice.main.data;
 
-import nerdygadgets.backoffice.main.Gpscoördinate;
 import nerdygadgets.backoffice.main.JDBC.Driver;
 import nerdygadgets.backoffice.main.Route.Coördinates;
 import nerdygadgets.backoffice.main.Route.GPSCoördinaten;
-import nerdygadgets.backoffice.main.Route.Route;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -26,8 +24,7 @@ public class GenerateRouteCities {
             gps = new GPSCoördinaten();
             System.out.println(customeraddress.getPostalcode());
             System.out.println(customeraddress.getAddress());
-            coordinates = gps.generate(customeraddress.getAddress()+ " " + customeraddress.getPostalcode());
-            this.customeraddress.setCoördinaten(coordinates);
+
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -57,7 +54,14 @@ public class GenerateRouteCities {
                 ca.setName(result.getString("CustomerName"));
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
-                ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
+                System.out.println(ca);
+                if(result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00){
+                    ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
+                    Driver.setCoördinates(ca.getCoördinaten().getLatitude(), ca.getCoördinaten().getLongtitude(), ca.getPostalcode());
+                } else {
+                    Coördinates c = new Coördinates(result.getDouble("long"), result.getDouble("lat"));
+                    ca.setCoördinaten(c);
+                }
 
                 selectedCities.add(ca);
             }

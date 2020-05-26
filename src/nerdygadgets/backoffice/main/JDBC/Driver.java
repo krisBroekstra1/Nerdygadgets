@@ -196,7 +196,7 @@ public class Driver {
     public static ResultSet getOrderCities(String province) {
         try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
-            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode, province FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' AND province = ?";
+            String query = "SELECT OrderID, CustomerName, City, Adres, Postalcode, province, lat, `long` FROM orders JOIN customer_ned as cn ON orders.CustomerID = cn.CustomerID WHERE Delivered = false AND Country = 'NED' AND province = ?";
             PreparedStatement preparedstmt = myConn.prepareStatement(query);
             preparedstmt.setString(1, province);
             ResultSet result = preparedstmt.executeQuery();
@@ -205,6 +205,21 @@ public class Driver {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void setCoördinates(double lat, double lon, String postalcode){
+        try{
+            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
+            // create the java mysql update preparedstatement
+            String query1 = "UPDATE customer_ned SET lat = ?, `long` = ? WHERE Postalcode = ?";
+            PreparedStatement preparedStmt1 = myConn.prepareStatement(query1);
+            preparedStmt1.setDouble(1, lat);
+            preparedStmt1.setDouble(2, lon);
+            preparedStmt1.setString(3, postalcode);
+            int rowsAffected1 = preparedStmt1.executeUpdate();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
 }

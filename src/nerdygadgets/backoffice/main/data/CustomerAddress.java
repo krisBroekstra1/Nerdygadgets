@@ -8,6 +8,7 @@ public class CustomerAddress {
     private String address;
     private String postalcode;
     private String orderid;
+    private String customerid;
     private Coördinates coordinaten;
     private String province;
 
@@ -19,6 +20,10 @@ public class CustomerAddress {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getCustomerid() {
+        return customerid;
     }
 
     public String getCity() {
@@ -64,5 +69,9 @@ public class CustomerAddress {
 
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public void setCustomerid(String customerid) {
+        this.customerid = customerid;
     }
 }

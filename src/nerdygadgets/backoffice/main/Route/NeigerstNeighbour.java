@@ -49,6 +49,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         JButton test = new JButton("Genereer route!");
         adressenVoor = new JLabel("Kies provincie");
         aantalKilometers = new JLabel("Totaal aantal Kilometers: " + 0);
+        stringVoorGenerateRouteCities = "drente";
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -230,11 +231,12 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
 
     }
 
-    //Voorkeurslocatie en gewenste straal toevoegen
+    //Provincie toevoegen
     public void makeJcombobox(GridBagConstraints c) throws SQLException {
         ArrayList<String> cities = new ArrayList<>();
         ResultSet result = Driver.getOrderCities();
         while (result.next()) {
+
             String city = result.getString("City");
             String adres = result.getString("Adres");
 
@@ -396,7 +398,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             Object selected = comboBox.getSelectedItem();
             System.out.println("Selected Item  = " + selected);
             String command = e.getActionCommand();
-            System.out.println("Action Command = " + command);
+            System.out.println("Action Commanddd = " + command);
 
             // Detect whether the action command is "comboBoxEdited"
             // or "comboBoxChanged"

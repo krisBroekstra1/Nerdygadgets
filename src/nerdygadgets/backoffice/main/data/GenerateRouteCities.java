@@ -44,17 +44,18 @@ public class GenerateRouteCities {
         System.out.println(province);
         ResultSet result = Driver.getOrderCities(province);
         try {
-            String checked = "";
+            CustomerAddress recentCA = new CustomerAddress(null,null,null);
             while (result.next()) {
                 CustomerAddress ca = new CustomerAddress(result.getString("City"), result.getString("adres"), result.getString("province"));
                 ca.setName(result.getString("CustomerName"));
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
-                if(result.getString("postalcode") != checked) {
+                System.out.println(result.getString("OrderID"));
+                if(!(ca.getCity().equals(recentCA.getCity()))) {
                     if (result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00) {
                         ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
                         Driver.setCoördinates(ca.getCoördinaten().getLatitude(), ca.getCoördinaten().getLongtitude(), ca.getPostalcode());
-                        checked = result.getString("OrderID");
+                        recentCA = ca;
                     } else {
                         Coördinates c = new Coördinates(result.getDouble("long"), result.getDouble("lat"));
                         ca.setCoördinaten(c);

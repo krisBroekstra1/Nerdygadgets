@@ -54,8 +54,8 @@ public class GenerateRouteCities {
                 ca.setName(result.getString("CustomerName"));
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
-                System.out.println(ca);
-                if(result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00 && result.getString("OrderID") != checked){
+                System.out.println(result.getString("OrderID"));
+                if(result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00 && result.getString("Postalcode") != checked){
                     ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
                     Driver.setCoördinates(ca.getCoördinaten().getLatitude(), ca.getCoördinaten().getLongtitude(), ca.getPostalcode());
                     checked = result.getString("OrderID");

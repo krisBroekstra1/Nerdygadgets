@@ -55,11 +55,11 @@ public class GenerateRouteCities {
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
                 System.out.println(result.getString("OrderID"));
-                if(result.getString("postalcode") != checked) {
+                if(result.getString("Postalcode") != checked) {
                     if (result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00) {
                         ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
                         Driver.setCoördinates(ca.getCoördinaten().getLatitude(), ca.getCoördinaten().getLongtitude(), ca.getPostalcode());
-                        checked = result.getString("OrderID");
+                        checked = result.getString("Postalcode");
                     } else {
                         Coördinates c = new Coördinates(result.getDouble("long"), result.getDouble("lat"));
                         ca.setCoördinaten(c);

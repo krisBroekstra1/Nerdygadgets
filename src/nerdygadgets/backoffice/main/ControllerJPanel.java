@@ -1,7 +1,6 @@
 package nerdygadgets.backoffice.main;
 
 import nerdygadgets.backoffice.main.Route.NeigerstNeighbour;
-import nerdygadgets.backoffice.main.Route.Route;
 
 import javax.swing.*;
 import java.io.IOException;

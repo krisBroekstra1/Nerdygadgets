@@ -36,6 +36,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     private JLabel aantalKilometers;
     private ArrayList<CustomerAddress> newroute = new ArrayList<>();
     private ArrayList<CustomerAddress> route;
+    private ArrayList<CustomerAddress> routeBuffer;
     private String geselecteerdeRowStad;
     private String geselecteerdeRowAdres;
     private String geselecteerdeRowCustomer;
@@ -44,6 +45,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     public NeigerstNeighbour() throws SQLException {
         setLayout(new GridBagLayout());
         route = new ArrayList<>();
+        routeBuffer = new ArrayList<>();
         JButton test = new JButton("Genereer route!");
         adressenVoor = new JLabel("Kies provincie");
         aantalKilometers = new JLabel("Totaal aantal Kilometers: " + 0);
@@ -67,7 +69,14 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
                 //twoOpt uitvoeren op route geeft als object een arraylist terug.
                 //aantal meegeven -> hoe hoger hoe vaker er wordt geprobeerd om een betere route te vinden
-                route = twoOpt(route, 3000, true);
+                CustomerAddress ca = new CustomerAddress("","","");
+                for(CustomerAddress c : route){
+                    if (!(ca.getCity().equals(c.getCity()))) {
+                        ca=c;
+                        routeBuffer.add(c);
+                    }
+                }
+                route = twoOpt(routeBuffer, 10000, true);
 
                 //aanpassen jlabel voor jpanel
                 aantalKilometers.setText("Totaal aantal Kilometers: " + getAfstand(route) + "km");
@@ -356,10 +365,10 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             for (int l = 0; l < size; l++) {
                 newroute.add(l, route.get(l));
             }
-            //als improve boven meegegeven aantal komt stopt de loop
+            //als iteraties boven meegegeven aantal komt stopt de loop
             int improve = 0;
             int iteraties = 0;
-            while (iteraties < aantal) {
+            while ((iteraties < aantal) && improve < 25) {
                 double distance0 = distance;
                 for (int i = 1; i < size - 1; i++) {
                     for (int k = i + 1; k < size; k++) {
@@ -371,7 +380,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                         System.out.println(distance);
                         //De afstand met nearestNeighbour met twoOpt
                         System.out.println(distance0);
-                        System.out.println("Verbeter poging:" + improve);
+                        System.out.println("Verbeter poging:" + iteraties);
                         //Als er een betere afstand is gevonden wordt deze gebruikt.
                         if (distance0 < distance) {
                             System.out.println("Beter pad gevonden!");

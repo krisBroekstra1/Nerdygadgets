@@ -25,20 +25,17 @@ import java.math.*;
 
 public class NeigerstNeighbour extends JPanel implements ActionListener {
     private GenerateRouteCities rc;
-    private ArrayList<CustomerAddress> AlgoArray;
     private static double distance = 0;
     private JComboBox<String> citiess;
     private DefaultTableModel model;
     private DefaultTableModel model2;
     private DefaultTableModel model3;
-    private String stringVoorGenerateRouteCities;
-    private double straalVoorGenerateRouteCities;
-    private HashMap<String, String> hm = new HashMap<>();
+    private String stringVoorProvincie;
     private JTable jtable;
     private JLabel adressenVoor;
     private JLabel aantalKilometers;
     private ArrayList<CustomerAddress> newroute = new ArrayList<>();
-    private ArrayList<CustomerAddress> route = new ArrayList<>();
+    private ArrayList<CustomerAddress> route;
     private String geselecteerdeRowStad;
     private String geselecteerdeRowAdres;
     private String geselecteerdeRowCustomer;
@@ -46,20 +43,20 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
 
     public NeigerstNeighbour() throws SQLException {
         setLayout(new GridBagLayout());
-        AlgoArray = new ArrayList<>();
+        route = new ArrayList<>();
         JButton test = new JButton("Genereer route!");
         adressenVoor = new JLabel("Kies provincie");
         aantalKilometers = new JLabel("Totaal aantal Kilometers: " + 0);
+        stringVoorProvincie = "drente";
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Hier wordt de start van routecities (met provincie)
-                CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities), stringVoorGenerateRouteCities);
+                CustomerAddress c1 = new CustomerAddress(stringVoorProvincie,null, stringVoorProvincie);
                 rc = new GenerateRouteCities(c1);
                 rc.getOrderCities();
                 //de array van alle plaatsen die binnen de straal vallen
-                AlgoArray = rc.getSelectedCities();
-                route = AlgoArray;
+                route = rc.getSelectedCities();
                 //Print alle waarden die voor het algoritme aan de arraylist zijn toegevoegd
                 System.out.println("Before algorithm:");
                 //resset van model dat in jpanel staat
@@ -70,14 +67,14 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
                 //twoOpt uitvoeren op route geeft als object een arraylist terug.
                 //aantal meegeven -> hoe hoger hoe vaker er wordt geprobeerd om een betere route te vinden
-                route = twoOpt(AlgoArray, 100, true);
+                route = twoOpt(route, 100, true);
                 //aanpassen jlabel voor jpanel
                 aantalKilometers.setText("Totaal aantal Kilometers: " + getAfstand(route) + "km");
                 //output in cosole voor bugfixing
                 System.out.println("After algorithm:");
-                System.out.println("Straal: " + straalVoorGenerateRouteCities);
                 System.out.println("Afstand" + getAfstand(route));
                 System.out.println("Zwolle - Windesheim");
+                //Toevoegen plaatsen aan model
                 String name = "";
                 System.out.println(route);
                 for (CustomerAddress c : route
@@ -93,7 +90,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             }
         });
 
-        //Opmaak van de Jpanel
+        //Opmaak van de Jpanel en toevoegen elementen
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -107,7 +104,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         c.fill = GridBagConstraints.HORIZONTAL;
         add(new JSeparator(), c);
         c.gridy = 2;
-        makeJcombobox(c);
+        maakJcombobox(c);
 
         c = new GridBagConstraints();
         c.gridx = 0;
@@ -256,16 +253,16 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
 
     }
 
-    //Voorkeurslocatie en gewenste straal toevoegen
-    public void makeJcombobox(GridBagConstraints c) throws SQLException {
+    //Provincie toevoegen
+    public void maakJcombobox(GridBagConstraints c) throws SQLException {
         ArrayList<String> cities = new ArrayList<>();
         ResultSet result = Driver.getOrderCities();
         while (result.next()) {
+
             String city = result.getString("City");
             String adres = result.getString("Adres");
 
             province = result.getString("province");
-            hm.put(city,adres);
             cities.add(province);
         }
         citiess = new JComboBox(cities.toArray());
@@ -412,7 +409,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     }
 
 
-    @Override
+    //Het veranderen van input voor provincie
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == citiess) {
 
@@ -422,7 +419,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             Object selected = comboBox.getSelectedItem();
             System.out.println("Selected Item  = " + selected);
             String command = e.getActionCommand();
-            System.out.println("Action Command = " + command);
+            System.out.println("Action Commanddd = " + command);
 
             // Detect whether the action command is "comboBoxEdited"
             // or "comboBoxChanged"
@@ -430,7 +427,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 System.out.println("User has typed a string in " +
                         "the combo box.");
                 adressenVoor.setText(selected + ": ");
-                stringVoorGenerateRouteCities = selected.toString();
+                stringVoorProvincie = selected.toString();
                 revalidate();
                 repaint();
             }

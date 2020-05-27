@@ -28,7 +28,6 @@ public class GenerateRouteCities {
         }catch(Exception ex){
             ex.printStackTrace();
         }
-
     }
 
     public void getOrderCities(){

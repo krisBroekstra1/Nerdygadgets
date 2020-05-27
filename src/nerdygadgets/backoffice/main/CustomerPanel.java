@@ -62,7 +62,7 @@ public class CustomerPanel extends JPanel implements ActionListener {
                 String email = _table.getModel().getValueAt(row, 5).toString(); //email
                 String tel = _table.getModel().getValueAt(row, 6).toString(); //telphonenumber
                 Driver.UpdateCustomer(id, cust, city, adres, post, email, tel);
-                JOptionPane.showMessageDialog(null, id + " is succesvol bewerkt", "bewerken voltooid", JOptionPane.INFORMATION_MESSAGE);
+
             }
         });
 

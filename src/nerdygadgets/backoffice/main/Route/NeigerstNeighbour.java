@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,7 +53,6 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         test.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 //Hier wordt de start van routecities (met provincie)
                 CustomerAddress c1 = new CustomerAddress(stringVoorGenerateRouteCities,hm.get(stringVoorGenerateRouteCities), stringVoorGenerateRouteCities);
                 rc = new GenerateRouteCities(c1);
@@ -63,7 +63,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 //Print alle waarden die voor het algoritme aan de arraylist zijn toegevoegd
                 System.out.println("Before algorithm:");
                 //resset van model dat in jpanel staat
-                model.setRowCount(1);
+                model.setRowCount(0);
                 for (CustomerAddress c : route
                 ) {
                     System.out.println(c.getCity() + " - " + c.getAddress());
@@ -79,6 +79,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 System.out.println("Afstand" + getAfstand(route));
                 System.out.println("Zwolle - Windesheim");
                 String name = "";
+                System.out.println(route);
                 for (CustomerAddress c : route
                 ) {
                     if (!(name.equals(c.getName()))) {
@@ -132,9 +133,22 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         model.addColumn("Customer");
         model.addColumn("Stad");
         model.addColumn("Adres");
-        model.addRow(new Object[]{"Customer", "Stad", "Adres"});
-        jtable = new JTable(model);
-        JTable jTable2 = new JTable(maakOrderTable(geselecteerdeRowStad, geselecteerdeRowAdres));
+
+        //model.addRow(new Object[]{"Customer", "Stad", "Adres"});
+        jtable = new JTable(model){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
+        jtable.getTableHeader().setBackground(new Color(217, 43, 133));
+        JTable jTable2 = new JTable(maakOrderTable(geselecteerdeRowStad, geselecteerdeRowAdres)){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
+        jTable2.getTableHeader().setBackground(new Color(217, 43, 133));
         JLabel ordertekst = new JLabel("De orders voor gekozen persoon:");
         jtable.getColumnModel().getColumn(2).setPreferredWidth(200);
         jtable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -162,7 +176,9 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         c.gridy = 8;
         add(aantalKilometers, c);
         c.gridy = 9;
-        add(jtable, c);
+        JScrollPane pane1 = new JScrollPane(jtable);
+        pane1.setPreferredSize(new Dimension(250,250));
+        add(pane1, c);
         c.gridy = 10;
         add(ordertekst, c);
         c.gridy = 11;
@@ -174,16 +190,25 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                     String orderId = jTable2.getValueAt(jTable2.getSelectedRow(),0).toString();
                     JTable jTable3 = null;
                     try {
-                        jTable3 = new JTable(maakproductTable(orderId));
+                        jTable3 = new JTable(maakproductTable(orderId)){
+                            @Override
+                            public boolean isCellEditable(int row, int column){
+                                return false;
+                            }
+                        };
+                        jTable3.getTableHeader().setBackground(new Color(217, 43, 133));
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-
-                    JOptionPane.showMessageDialog(null,jTable3,"OrderID: " +orderId,JOptionPane.INFORMATION_MESSAGE);
+                    JScrollPane pane3 = new JScrollPane(jTable3);
+                    pane3.setPreferredSize(new Dimension(200, 200));
+                    JOptionPane.showMessageDialog(null,pane3,"OrderID: " +orderId,JOptionPane.INFORMATION_MESSAGE);
             }
         }
         });
-        add(jTable2, c);
+        JScrollPane pane2 = new JScrollPane(jTable2);
+        pane2.setPreferredSize(new Dimension(250,250));
+        add(pane2, c);
 
         c = new GridBagConstraints();
         c.gridx = 0;
@@ -205,7 +230,8 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     public DefaultTableModel maakproductTable(String orderId) throws SQLException{
         model3 = new DefaultTableModel();
         model3.addColumn("Product");
-        model3.addRow(new Object[]{"Product"});
+        //model3.addRow(new Object[]{"Product"});
+
         ResultSet result = Driver.getProduct(orderId);
         while(result.next()){
             model3.addRow(new Object[]{result.getString("StockItemName")});
@@ -218,7 +244,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         model2.addColumn("OrderID");
         model2.addColumn("Klant");
         model2.addColumn("Besteldatum");
-        model2.addRow(new Object[]{"OrderID", "Klant", "Besteldatum"});
+        //model2.addRow(new Object[]{"OrderID", "Klant", "Besteldatum"});
         ResultSet result = Driver.getOrders(stad, adres);
         while (result.next()) {
             String klant = result.getString("CustomerName");

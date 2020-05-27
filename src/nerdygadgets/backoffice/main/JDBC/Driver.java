@@ -3,6 +3,7 @@ package nerdygadgets.backoffice.main.JDBC;
 import com.mysql.cj.protocol.Resultset;
 import nerdygadgets.backoffice.main.data.Shaa256;
 
+import javax.swing.*;
 import java.sql.*;
 
 public class Driver {
@@ -106,6 +107,14 @@ public class Driver {
 
     public static void UpdateCustomer(String id, String cust, String city, String adres, String post, String email, String tel) {
         try {
+            String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+            if(post.contains(" ")){
+                post = post.replace(" ", "");
+            }
+            if(!tel.matches(pattern)){
+                JOptionPane.showMessageDialog(null, "Telefoon nummer is niet correct", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             // create the java mysql update preparedstatement
             String query = "UPDATE customer_ned SET CustomerName = ?, City = ?, Adres = ?, Postalcode = ?, EmailAddress = ?, TelephoneNumber = ? WHERE CustomerID = ?";
@@ -120,7 +129,7 @@ public class Driver {
 
             // execute the java preparedstatement
             int rowsAffected = preparedStmt.executeUpdate();
-
+            JOptionPane.showMessageDialog(null, id + " is succesvol bewerkt", "bewerken voltooid", JOptionPane.INFORMATION_MESSAGE);
             System.out.println("Hoeveelheid rows veranderd: " + rowsAffected);
         } catch (Exception e) {
             e.printStackTrace();

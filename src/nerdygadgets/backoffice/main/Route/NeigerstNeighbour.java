@@ -250,7 +250,6 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             model2.addRow(new Object[]{Orderid, klant, bestelDatum});
         }
         return model2;
-
     }
 
     //Provincie toevoegen

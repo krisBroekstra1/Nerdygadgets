@@ -22,8 +22,6 @@ public class GenerateRouteCities {
         try{
             this.customeraddress = ca;
             gps = new GPSCoördinaten();
-            System.out.println(customeraddress.getPostalcode());
-            System.out.println(customeraddress.getAddress());
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -33,8 +31,6 @@ public class GenerateRouteCities {
     public void getOrderCities(){
         try{
             getAllCities(customeraddress.getProvince());
-            System.out.println(customeraddress.getProvince());
-            System.out.println(selectedCities);
         } catch(Exception ex){
             ex.printStackTrace();
         }
@@ -54,7 +50,6 @@ public class GenerateRouteCities {
                 ca.setName(result.getString("CustomerName"));
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
-                System.out.println(result.getString("OrderID"));
                 if(result.getString("postalcode") != checked) {
                     if (result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00) {
                         ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));

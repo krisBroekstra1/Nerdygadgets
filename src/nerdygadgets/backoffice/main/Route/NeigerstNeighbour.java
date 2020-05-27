@@ -67,7 +67,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 }
                 //twoOpt uitvoeren op route geeft als object een arraylist terug.
                 //aantal meegeven -> hoe hoger hoe vaker er wordt geprobeerd om een betere route te vinden
-                route = twoOpt(route, 100, true);
+                route = twoOpt(route, 3000, true);
                 //aanpassen jlabel voor jpanel
                 aantalKilometers.setText("Totaal aantal Kilometers: " + getAfstand(route) + "km");
                 //output in cosole voor bugfixing
@@ -358,7 +358,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
             //als improve boven meegegeven aantal komt stopt de loop
             int improve = 0;
             int iteraties = 0;
-            while (improve < aantal) {
+            while (iteraties < aantal) {
                 double distance0 = distance;
                 for (int i = 1; i < size - 1; i++) {
                     for (int k = i + 1; k < size; k++) {

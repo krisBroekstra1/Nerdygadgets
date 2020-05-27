@@ -19,9 +19,9 @@ public class LoginContent extends JPanel implements ActionListener {
     private JLabel name, passwordL;
     private Frame frame;
 
-    public LoginContent(Frame f){
+    public LoginContent(Frame f) {
         this.frame = f;
-        setLayout(new MigLayout("wrap 1", "[center][right][left][c]","[top][center][b]"));
+        setLayout(new MigLayout("wrap 1", "[center][right][left][c]", "[top][center][b]"));
         add(Box.createHorizontalGlue());
         name = new JLabel("Email:");
         username = new JTextField();
@@ -41,7 +41,7 @@ public class LoginContent extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == login) {
+        if (e.getSource() == login) {
             try {
                 ResultSet myrs = Driver.login(username.getText(), String.valueOf(password.getPassword()));
                 if (myrs.next()) {
@@ -62,7 +62,7 @@ public class LoginContent extends JPanel implements ActionListener {
                         frame.repaint();
                     }
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
 
             }
         }

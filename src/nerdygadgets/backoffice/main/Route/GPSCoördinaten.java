@@ -15,7 +15,7 @@ import java.net.URL;
 
 
 public class GPSCoördinaten {
-    private double lon,lat;
+    private double lon, lat;
     private JSONParser parser = new JSONParser();
 
     public Coördinates generate(String adres) throws IOException {
@@ -50,7 +50,7 @@ public class GPSCoördinaten {
     }
 
     public double calculateDistance(Coördinates c1, Coördinates c2) {
-        if(c1 == null|| c2 == null){
+        if (c1 == null || c2 == null) {
             System.out.println("Coordinaten zijn null, alles kapot!");
             return -1;
         }

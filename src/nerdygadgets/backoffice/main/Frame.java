@@ -2,6 +2,7 @@ package nerdygadgets.backoffice.main;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class Frame extends JFrame {
 
     public Frame(int width, int height) {

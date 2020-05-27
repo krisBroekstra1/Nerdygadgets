@@ -8,21 +8,22 @@ public class LoginData {
     private String email;
     public Boolean isloggedin = true;
 
-    private LoginData(){
+    private LoginData() {
 
     }
 
-    public static LoginData getInstance(){
-        if(instance == null){
+    public static LoginData getInstance() {
+        if (instance == null) {
             instance = new LoginData();
         }
         return instance;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
-    public String getId(){
+
+    public String getId() {
         return this.id;
     }
 
@@ -30,23 +31,23 @@ public class LoginData {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
 
-    public void login(){
+    public void login() {
         this.isloggedin = true;
     }
 
-    public void logout(){
+    public void logout() {
         this.isloggedin = false;
         this.id = null;
         this.name = null;

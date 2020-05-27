@@ -198,7 +198,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                         throwables.printStackTrace();
                     }
                     JScrollPane pane3 = new JScrollPane(jTable3);
-                    pane3.setPreferredSize(new Dimension(200, 200));
+                    pane3.setPreferredSize(new Dimension(300, 200));
                     JOptionPane.showMessageDialog(null,pane3,"OrderID: " +orderId,JOptionPane.INFORMATION_MESSAGE);
             }
         }

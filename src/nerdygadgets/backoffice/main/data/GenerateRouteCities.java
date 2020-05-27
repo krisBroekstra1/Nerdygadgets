@@ -22,8 +22,6 @@ public class GenerateRouteCities {
         try{
             this.customeraddress = ca;
             gps = new GPSCoördinaten();
-            System.out.println(customeraddress.getPostalcode());
-            System.out.println(customeraddress.getAddress());
 
         }catch(Exception ex){
             ex.printStackTrace();
@@ -33,8 +31,6 @@ public class GenerateRouteCities {
     public void getOrderCities(){
         try{
             getAllCities(customeraddress.getProvince());
-            System.out.println(customeraddress.getProvince());
-            System.out.println(selectedCities);
         } catch(Exception ex){
             ex.printStackTrace();
         }

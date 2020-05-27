@@ -44,19 +44,21 @@ public class GenerateRouteCities {
         return selectedCities;
     }
 
-    private void getAllCities(String province){
+    private boolean getAllCities(String province){
         System.out.println(province);
         ResultSet result = Driver.getOrderCities(province);
         try {
+            String checked = "";
             while (result.next()) {
                 CustomerAddress ca = new CustomerAddress(result.getString("City"), result.getString("adres"), result.getString("province"));
                 ca.setName(result.getString("CustomerName"));
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
                 System.out.println(ca);
-                if(result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00){
+                if(result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00 && result.getString("OrderID") != checked){
                     ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
                     Driver.setCoördinates(ca.getCoördinaten().getLatitude(), ca.getCoördinaten().getLongtitude(), ca.getPostalcode());
+                    checked = result.getString("OrderID");
                 } else {
                     Coördinates c = new Coördinates(result.getDouble("long"), result.getDouble("lat"));
                     ca.setCoördinaten(c);
@@ -64,9 +66,11 @@ public class GenerateRouteCities {
 
                 selectedCities.add(ca);
             }
+            return true;
         }
         catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 

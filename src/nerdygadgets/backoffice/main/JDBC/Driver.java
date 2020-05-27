@@ -23,17 +23,6 @@ public class Driver {
             return null;
         }
     }
-    //Zo lees je de gegevens uit
-    /*ResultSet myRs = Driver.adressen();
-        try {
-        while (myRs.next()) {
-            System.out.println(myRs.getString("DeliveryInstructions"));
-            System.out.println();
-        }
-    }
-        catch (Exception e) {
-        e.printStackTrace();
-    }*/
 
     //Functie medewerkers
     public static ResultSet medewerkers() {

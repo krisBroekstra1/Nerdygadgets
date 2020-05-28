@@ -53,7 +53,7 @@ public class GenerateRouteCities {
                 System.out.println(result.getString("OrderID"));
                 if (!(ca.getCity().equals(recentCA.getCity()))) {
                     if (result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00) {
-                        ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
+                        ca.setCoördinaten(gps.generate(result.getString("adres") + ", " + result.getString("City") + ", "+ result.getString("Postalcode")));
                         Driver.setCoördinates(ca.getCoördinaten().getLatitude(), ca.getCoördinaten().getLongtitude(), ca.getPostalcode());
                         recentCA = ca;
                     } else {

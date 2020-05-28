@@ -47,7 +47,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
         route = new ArrayList<>();
         routeBuffer = new ArrayList<>();
         JButton test = new JButton("Genereer route!");
-        adressenVoor = new JLabel("Kies provincie");
+        adressenVoor = new JLabel("Drenthe:");
         aantalKilometers = new JLabel("Totaal aantal Kilometers: " + 0);
         stringVoorProvincie = "Drenthe";
         test.addActionListener(new ActionListener() {

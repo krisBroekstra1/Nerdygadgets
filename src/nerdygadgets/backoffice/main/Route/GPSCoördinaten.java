@@ -21,8 +21,9 @@ public class GPSCoördinaten {
     public Coördinates generate(String adres) throws IOException {
         String apiKey = "96e20cadb6a7778960dd6d2e55d01610";
         String query = adres;
+        query.concat(", Nederland");
         query = query.replaceAll(" ", "%20");
-        String surl = "http://api.positionstack.com/v1/forward?access_key=" + apiKey + "&query=" + query;
+        String surl = "http://api.positionstack.com/v1/forward?access_key=" + apiKey + "&query=" + query ;
         URL url = new URL(surl);
         InputStream ip = url.openStream();
         try {

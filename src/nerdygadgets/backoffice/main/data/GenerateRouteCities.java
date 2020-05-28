@@ -74,8 +74,4 @@ public class GenerateRouteCities {
             return false;
         }
     }
-
-    public void setStraal(double straal) {
-        this.straal = straal;
-    }
 }

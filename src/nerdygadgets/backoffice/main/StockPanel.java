@@ -23,17 +23,17 @@ public class StockPanel extends JPanel implements ActionListener {
     JLabel label;
 
 
-    public StockPanel(){
+    public StockPanel() {
         ResultSet rs = Driver.getStock();
         setLayout(new MigLayout("wrap", "[center, grow]"));
         label = new JLabel("Voorraad");
         try {
-            _table = new JTable(buildTableModel(rs)){
+            _table = new JTable(buildTableModel(rs)) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     if (column == 0) {
                         return false;
-                    }  else {
+                    } else {
                         return true;
                     }
                 }

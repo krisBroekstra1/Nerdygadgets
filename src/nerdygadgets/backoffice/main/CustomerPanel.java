@@ -22,17 +22,17 @@ public class CustomerPanel extends JPanel implements ActionListener {
     JLabel label;
 
 
-    public CustomerPanel(){
+    public CustomerPanel() {
         ResultSet rs = Driver.getCustomers();
         setLayout(new MigLayout("wrap", "[center, grow]"));
         label = new JLabel("Klanten");
         try {
-            _table = new JTable(buildTableModel(rs)){
+            _table = new JTable(buildTableModel(rs)) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     if (column == 0) {
                         return false;
-                    }  else {
+                    } else {
                         return true;
                     }
                 }

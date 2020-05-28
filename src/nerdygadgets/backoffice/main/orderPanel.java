@@ -23,17 +23,17 @@ public class orderPanel extends JPanel implements ActionListener {
     JLabel label;
 
 
-    public orderPanel(){
+    public orderPanel() {
         ResultSet rs = Driver.orders();
         setLayout(new MigLayout("wrap", "[center, grow]"));
         label = new JLabel("Orders");
         try {
-            _table = new JTable(buildTableModel(rs)){
+            _table = new JTable(buildTableModel(rs)) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     if (column == 0) {
                         return false;
-                    }  else {
+                    } else {
                         return true;
                     }
                 }

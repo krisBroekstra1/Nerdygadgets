@@ -18,20 +18,20 @@ public class GenerateRouteCities {
     Coördinates coordinates;
     private double straal = 500;
 
-    public GenerateRouteCities(CustomerAddress ca){
-        try{
+    public GenerateRouteCities(CustomerAddress ca) {
+        try {
             this.customeraddress = ca;
             gps = new GPSCoördinaten();
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void getOrderCities(){
-        try{
+    public void getOrderCities() {
+        try {
             getAllCities(customeraddress.getProvince());
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -40,18 +40,18 @@ public class GenerateRouteCities {
         return selectedCities;
     }
 
-    private boolean getAllCities(String province){
+    private boolean getAllCities(String province) {
         System.out.println(province);
         ResultSet result = Driver.getOrderCities(province);
         try {
-            CustomerAddress recentCA = new CustomerAddress(null,null,null);
+            CustomerAddress recentCA = new CustomerAddress(null, null, null);
             while (result.next()) {
                 CustomerAddress ca = new CustomerAddress(result.getString("City"), result.getString("adres"), result.getString("province"));
                 ca.setName(result.getString("CustomerName"));
                 ca.setPostalcode(result.getString("Postalcode"));
                 ca.setOrderid(result.getString("OrderID"));
                 System.out.println(result.getString("OrderID"));
-                if(!(ca.getCity().equals(recentCA.getCity()))) {
+                if (!(ca.getCity().equals(recentCA.getCity()))) {
                     if (result.getDouble("lat") == 0.00 && result.getDouble("long") == 0.00) {
                         ca.setCoördinaten(gps.generate(result.getString("City") + " " + result.getString("adres")));
                         Driver.setCoördinates(ca.getCoördinaten().getLatitude(), ca.getCoördinaten().getLongtitude(), ca.getPostalcode());
@@ -68,8 +68,7 @@ public class GenerateRouteCities {
                 selectedCities.add(ca);
             }
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

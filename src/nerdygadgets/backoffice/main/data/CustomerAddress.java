@@ -12,7 +12,7 @@ public class CustomerAddress {
     private Coördinates coordinaten;
     private String province;
 
-    public CustomerAddress(String city, String address, String province){
+    public CustomerAddress(String city, String address, String province) {
         this.address = address;
         this.city = city;
         this.province = province;
@@ -30,7 +30,9 @@ public class CustomerAddress {
         return city;
     }
 
-    public String getProvince(){return province;}
+    public String getProvince() {
+        return province;
+    }
 
     public String getName() {
         return name;
@@ -44,8 +46,13 @@ public class CustomerAddress {
         return orderid;
     }
 
-    public Coördinates getCoördinaten(){return coordinaten;}
-    public void setCoördinaten(Coördinates c){this.coordinaten = c;}
+    public Coördinates getCoördinaten() {
+        return coordinaten;
+    }
+
+    public void setCoördinaten(Coördinates c) {
+        this.coordinaten = c;
+    }
 
     public void setAddress(String address) {
         this.address = address;

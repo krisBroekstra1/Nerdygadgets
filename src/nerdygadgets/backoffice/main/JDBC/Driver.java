@@ -97,10 +97,10 @@ public class Driver {
     public static void UpdateCustomer(String id, String cust, String city, String adres, String post, String email, String tel) {
         try {
             String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
-            if(post.contains(" ")){
+            if (post.contains(" ")) {
                 post = post.replace(" ", "");
             }
-            if(!tel.matches(pattern)){
+            if (!tel.matches(pattern)) {
                 JOptionPane.showMessageDialog(null, "Telefoon nummer is niet correct", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -205,8 +205,8 @@ public class Driver {
         return null;
     }
 
-    public static void setCoördinates(double lat, double lon, String postalcode){
-        try{
+    public static void setCoördinates(double lat, double lon, String postalcode) {
+        try {
             Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/wideworldimporters", "root", "");
             // create the java mysql update preparedstatement
             String query1 = "UPDATE customer_ned SET lat = ?, `long` = ? WHERE Postalcode = ?";
@@ -215,7 +215,7 @@ public class Driver {
             preparedStmt1.setDouble(2, lon);
             preparedStmt1.setString(3, postalcode);
             int rowsAffected1 = preparedStmt1.executeUpdate();
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

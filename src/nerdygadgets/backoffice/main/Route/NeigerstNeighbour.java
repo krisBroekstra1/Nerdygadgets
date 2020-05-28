@@ -73,8 +73,8 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
                 ca.setPostalcode("");
                 for (CustomerAddress c : route) {
                     if (!(ca.getPostalcode().equals(c.getPostalcode()))) {
-                            ca = c;
-                            routeBuffer.add(c);
+                        ca = c;
+                        routeBuffer.add(c);
                     }
                 }
                 ca.setPostalcode("");

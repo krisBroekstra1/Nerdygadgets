@@ -81,7 +81,7 @@ public class NearestNeighbour extends JPanel implements ActionListener {
                 route = twoOpt(routeBuffer, 10000, true);
                 routeBuffer.clear();
                 //aanpassen jlabel voor jpanel
-                aantalKilometers.setText("Totaal aantal Kilometers: " + getAfstand(route) + "km");
+                aantalKilometers.setText("Totaal aantal Kilometers: " + (int) getAfstand(route) + " km");
                 //output in cosole voor bugfixing
                 System.out.println("After algorithm:");
                 System.out.println("Afstand" + getAfstand(route));

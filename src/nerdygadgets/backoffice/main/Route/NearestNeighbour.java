@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.math.*;
 
-public class NeigerstNeighbour extends JPanel implements ActionListener {
+public class NearestNeighbour extends JPanel implements ActionListener {
     private GenerateRouteCities rc;
     private static double distance = 0;
     private JComboBox<String> citiess;
@@ -42,7 +42,7 @@ public class NeigerstNeighbour extends JPanel implements ActionListener {
     private String geselecteerdeRowCustomer;
     private String province;
 
-    public NeigerstNeighbour() throws SQLException {
+    public NearestNeighbour() throws SQLException {
         setLayout(new GridBagLayout());
         route = new ArrayList<>();
         routeBuffer = new ArrayList<>();

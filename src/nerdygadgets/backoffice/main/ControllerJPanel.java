@@ -1,6 +1,6 @@
 package nerdygadgets.backoffice.main;
 
-import nerdygadgets.backoffice.main.Route.NeigerstNeighbour;
+import nerdygadgets.backoffice.main.Route.NearestNeighbour;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class ControllerJPanel extends JPanel {
         pane.addTab("Voorraad", new StockPanel());
         pane.addTab("Klanten", new CustomerPanel());
         pane.addTab("Orders", new orderPanel());
-        pane.addTab("NearestNeighbour", new NeigerstNeighbour());
+        pane.addTab("NearestNeighbour", new NearestNeighbour());
         add(pane);
     }
 }
